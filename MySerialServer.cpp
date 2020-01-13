@@ -1,16 +1,14 @@
 //
 // Created by yuvallevy on 13/01/2020.
-//
-
 #include "MySerialServer.h"
-using namespace std;
 
-MySerialServer::MySerialServer(int port){
-    this->port= port;
+MySerialServer::MySerialServer(){
+
 }
 
-void MySerialServer::open(int port, ClientHandler clientHandler){
-    this.port = port;
+void MySerialServer::open(int port, MyTestClientHandler myTestClientHandler){
+    int timeout_in_seconds = 120;
+    this->port = port;
 //create socket
     int socketfd = socket(AF_INET, SOCK_STREAM, 0);
     if (socketfd == -1) {
@@ -42,14 +40,26 @@ void MySerialServer::open(int port, ClientHandler clientHandler){
         std::cout<<"Server is now listening ..."<<std::endl;
     }
 
-    // accepting a Client
-    client_socket = accept(socketfd, (struct sockaddr *)&address,
-                           (socklen_t*)&address);
-    if (client_socket == -1) {
-        std::cerr<<"Error accepting Client"<<std::endl;
+    while(true) {
+        //timeout condition
+        struct timeval tv;
+        tv.tv_sec = timeout_in_seconds;
+        setsockopt(socketfd, SOL_SOCKET, SO_RCVTIMEO, (const char*)&tv, sizeof tv);
+
+        // accepting a Client
+        client_socket = accept(socketfd, (struct sockaddr *)&address,
+                               (socklen_t*)&address);
+        if (client_socket == -1) {
+            std::cerr<<"Error accepting Client"<<std::endl;
+        }
+
+        myTestClientHandler.handleClient(client_socket);
+
+        close(socketfd); //closing the listening socket
     }
-    close(socketfd); //closing the listening socket
 }
+
+
 void MySerialServer::stop(){
 
 }

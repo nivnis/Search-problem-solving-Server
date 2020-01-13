@@ -18,10 +18,10 @@
 using namespace std;
 class MyTestClientHandler : public ClientHandler{
 private:
-    Solver<string* problem, string* solution>  solver;
-    CacheManager <string* problem, string* solution> myCache;
+    CacheManager <string, string> myCache;
+    Solver<string, string>  solver;
 public:
-    MyTestClientHandler();
-    void handleClient(int socket);
+    MyTestClientHandler(CacheManager<string, string> cacheManager, Solver<string, string> solver);
+    void handleClient(int socket) override;
 
 };

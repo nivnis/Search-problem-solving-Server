@@ -12,11 +12,12 @@
 using namespace std;
 
 
-class FileCacheManager : public CacheManager{
+template<typename P, typename S> class FileCacheManager : public CacheManager<P,S>{
 private:
 
 public:
 
+    FileCacheManager();
     void has_solution(P problem);
     string get(P problem);
 };

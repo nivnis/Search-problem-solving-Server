@@ -3,3 +3,11 @@
 //
 
 #include "MyTestClientHandler.h"
+
+MyTestClientHandler::MyTestClientHandler(CacheManager<string, string>, Solver<string, string>) {
+
+}
+
+void MyTestClientHandler::handleClient(int socket) {
+
+}

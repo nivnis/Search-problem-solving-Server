@@ -4,13 +4,12 @@
 #pragma once
 #ifndef EX4_CACHEMANAGER_H
 #define EX4_CACHEMANAGER_H
-
 #endif //EX4_CACHEMANAGER_H
-
+#include <string>
 using namespace std;
 
 
-class CacheManager{
+template<typename P, typename S> class CacheManager{
 private:
 
 public:
