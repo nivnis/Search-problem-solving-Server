@@ -12,13 +12,14 @@
 #include "Solver.h"
 #include <iostream>
 #include <fstream>
+#include "string.h"
 
 
 using namespace std;
 class MyTestClientHandler : public ClientHandler{
 private:
-    Solver solver;
-    CacheManager myCache;
+    Solver<string* problem, string* solution>  solver;
+    CacheManager <string* problem, string* solution> myCache;
 public:
     MyTestClientHandler();
     void handleClient(int socket);
