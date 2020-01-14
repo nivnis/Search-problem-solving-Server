@@ -9,15 +9,18 @@
 #endif //EX4_FILECACHEMANAGER_H
 
 #include "CacheManager.h"
+#include "string.h"
 using namespace std;
 
 
-template<typename P, typename S> class FileCacheManager : public CacheManager<P,S>{
+class FileCacheManager : public CacheManager<string,string>{
 private:
 
 public:
 
     FileCacheManager();
-    void has_solution(P problem);
-    string get(P problem);
+
+    void has_solution(string problem);
+
+    string get(string problem);
 };

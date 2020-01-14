@@ -19,12 +19,12 @@
 #include "MyTestClientHandler.h"
 
 using namespace std;
-class MySerialServer : public Server{
+class MySerialServer : public Server {
 private:
     int port;
     int client_socket;
 public:
     MySerialServer();
-    void open(int port, MyTestClientHandler myTestClientHandler);
+    void open(int port, ClientHandler *myTestClientHandler);
     void stop();
 };

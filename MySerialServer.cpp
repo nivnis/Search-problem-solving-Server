@@ -6,7 +6,7 @@ MySerialServer::MySerialServer(){
 
 }
 
-void MySerialServer::open(int port, MyTestClientHandler myTestClientHandler){
+void MySerialServer::open(int port, ClientHandler *myTestClientHandler){
     int timeout_in_seconds = 120;
     this->port = port;
 //create socket
@@ -53,7 +53,7 @@ void MySerialServer::open(int port, MyTestClientHandler myTestClientHandler){
             std::cerr<<"Error accepting Client"<<std::endl;
         }
 
-        myTestClientHandler.handleClient(client_socket);
+        myTestClientHandler->handleClient(client_socket);
 
         close(socketfd); //closing the listening socket
     }

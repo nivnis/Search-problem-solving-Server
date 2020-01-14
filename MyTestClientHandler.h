@@ -16,12 +16,12 @@
 
 
 using namespace std;
-class MyTestClientHandler : public ClientHandler{
+class MyTestClientHandler : public ClientHandler {
 private:
-    CacheManager <string, string> myCache;
-    Solver<string, string>  solver;
+    CacheManager <string, string> *myCache;
+    Solver<string, string>  *solver;
 public:
-    MyTestClientHandler(CacheManager<string, string> cacheManager, Solver<string, string> solver);
+    MyTestClientHandler(CacheManager<string, string> *cacheManager, Solver<string, string> *solver);
     void handleClient(int socket) override;
 
 };

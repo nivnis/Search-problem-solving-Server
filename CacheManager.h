@@ -11,9 +11,7 @@ using namespace std;
 
 template<typename P, typename S> class CacheManager{
 private:
-
 public:
-
-    void has_solution(P problem);
-    string get(P problem);
+    virtual void has_solution(P problem) = 0;
+    virtual string get(P problem) = 0;
 };
