@@ -7,7 +7,6 @@
 
 #endif //EX4_SOLVER_H
 #pragma once
-#include "string.h"
 #include <string>
 using namespace std;
 

@@ -6,8 +6,6 @@
 #define EX4_STRINGREVERSER_H
 
 #pragma once
-
-
 #include "Solver.h"
 using namespace std;
 
