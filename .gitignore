@@ -49,3 +49,6 @@
 /.idea/Project2.iml
 /.idea/inspectionProfiles/Project_Default.xml
 /.idea/vcs.xml
+/cmake-build-debug/CMakeFiles/ex4.dir/FileCacheManager.cpp.o
+/cmake-build-debug/CMakeFiles/ex4.dir/MySerialServer.cpp.o
+/cmake-build-debug/CMakeFiles/ex4.dir/MyTestClientHandler.cpp.o
