@@ -22,4 +22,5 @@ private:
 public:
     MyTestClientHandler(CacheManager<string, string> *cacheManager, Solver<string, string> *solver);
     void handleClient(int client_socket) override;
+    string hash_to_string(string problem);
 };
