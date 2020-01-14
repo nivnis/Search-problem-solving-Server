@@ -12,6 +12,6 @@ int main() {
     ClientHandler *clientHandler = new MyTestClientHandler(cacheManager, solver);
 //    Server *server = new MySerialServer();
     Server* server = new MySerialServer();
-    server->open(5400, clientHandler);
+    server->open(5600, clientHandler);
     return 0;
 }

@@ -12,7 +12,6 @@
 #include "Solver.h"
 #include <iostream>
 #include <fstream>
-#include "string.h"
 
 
 using namespace std;
@@ -22,6 +21,6 @@ private:
     Solver<string, string>  *solver;
 public:
     MyTestClientHandler(CacheManager<string, string> *cacheManager, Solver<string, string> *solver);
-    void handleClient(int socket) override;
+    void handleClient(int client_socket) override;
 
 };

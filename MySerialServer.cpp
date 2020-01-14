@@ -7,7 +7,7 @@ MySerialServer::MySerialServer(){
 }
 
 void MySerialServer::open(int port, ClientHandler *myTestClientHandler){
-    int timeout_in_seconds = 120;
+    int timeout_in_seconds = 240.0;
     this->port = port;
 //create socket
     int socketfd = socket(AF_INET, SOCK_STREAM, 0);
@@ -47,10 +47,11 @@ void MySerialServer::open(int port, ClientHandler *myTestClientHandler){
         setsockopt(socketfd, SOL_SOCKET, SO_RCVTIMEO, (const char*)&tv, sizeof tv);
 
         // accepting a Client
-        client_socket = accept(socketfd, (struct sockaddr *)&address,
-                               (socklen_t*)&address);
+        int addrlen = sizeof(address);
+        client_socket = accept(socketfd, (struct sockaddr *)&address, (socklen_t*)&addrlen);
         if (client_socket == -1) {
             std::cerr<<"Error accepting Client"<<std::endl;
+            exit(1);
         }
 
         myTestClientHandler->handleClient(client_socket);
