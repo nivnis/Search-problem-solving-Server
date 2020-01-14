@@ -17,7 +17,6 @@ void MyTestClientHandler::handleClient(int client_socket) {
     //vector<float> valVector;
 
     //read from the simulator to the buffer
-    int i = 0;
     int valread = read(client_socket, buffer, 1024);
     problem.append(buffer, valread);
     //while we didn't meet the '\n'
@@ -25,7 +24,9 @@ void MyTestClientHandler::handleClient(int client_socket) {
         valread = read(client_socket, buffer, 1024);
         problem.append(buffer, valread);
     }
+
     string problem_after_hash = hash_to_string(problem);
+
     // getting the hash number of the problem.
     if(myCache->has_solution(problem_after_hash)) {
         solution = myCache->get(problem_after_hash);
@@ -34,6 +35,7 @@ void MyTestClientHandler::handleClient(int client_socket) {
         // getting the actual problem.
         solution = solver->solve(problem);
         //here i update the solution to cache
+        myCache->save(problem_after_hash, solution);
     }
 
     //here i send the solution to the client via socket

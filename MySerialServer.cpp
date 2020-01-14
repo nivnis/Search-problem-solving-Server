@@ -47,6 +47,7 @@ void MySerialServer::open(int port, ClientHandler *myTestClientHandler){
         setsockopt(socketfd, SOL_SOCKET, SO_RCVTIMEO, (const char*)&tv, sizeof tv);
 
         // accepting a Client
+        listen(client_socket, 24000);
         int addrlen = sizeof(address);
         client_socket = accept(socketfd, (struct sockaddr *)&address, (socklen_t*)&addrlen);
         if (client_socket == -1) {
@@ -56,7 +57,7 @@ void MySerialServer::open(int port, ClientHandler *myTestClientHandler){
 
         myTestClientHandler->handleClient(client_socket);
 
-        close(socketfd); //closing the listening socket
+        close(client_socket); //closing the listening socket
     }
 }
 
