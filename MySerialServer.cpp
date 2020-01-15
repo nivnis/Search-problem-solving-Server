@@ -32,13 +32,13 @@ void MySerialServer::open(int port, ClientHandler *myTestClientHandler){
         exit(1);
     }
 
-    //making socket listen to the port
-    if (listen(socketfd, 5) == -1) { //can also set to SOMAXCON (max connections)
-        std::cerr<<"Error during listening command"<<std::endl;
-        exit(1);
-    } else{
-        std::cout<<"Server is now listening ..."<<std::endl;
-    }
+//    //making socket listen to the port
+//    if (listen(socketfd, 5) == -1) { //can also set to SOMAXCON (max connections)
+//        std::cerr<<"Error during listening command"<<std::endl;
+//        exit(1);
+//    } else{
+//        std::cout<<"Server is now listening ..."<<std::endl;
+//    }
 
     while(true) {
         //timeout condition
@@ -46,8 +46,16 @@ void MySerialServer::open(int port, ClientHandler *myTestClientHandler){
         tv.tv_sec = timeout_in_seconds;
         setsockopt(socketfd, SOL_SOCKET, SO_RCVTIMEO, (const char*)&tv, sizeof tv);
 
+        //making socket listen to the port
+        if (listen(socketfd, 5) == -1) { //can also set to SOMAXCON (max connections)
+            std::cerr<<"Error during listening command"<<std::endl;
+            exit(1);
+        } else{
+            std::cout<<"Server is now listening ..."<<std::endl;
+        }
+
         // accepting a Client
-        listen(client_socket, 24000);
+//        listen(client_socket, 24000);
         int addrlen = sizeof(address);
         client_socket = accept(socketfd, (struct sockaddr *)&address, (socklen_t*)&addrlen);
         if (client_socket == -1) {
