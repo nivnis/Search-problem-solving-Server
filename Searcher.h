@@ -16,5 +16,5 @@ using namespace std;
 template <class T> class Searcher{
 public:
     virtual vector<State<T>* > search(Searchable<T>* searchable) = 0;
-    virtual int getNumberOfNodes() const = 0;tk
+    virtual int getNumberOfNodes() const = 0;
 };

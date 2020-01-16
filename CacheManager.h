@@ -9,7 +9,7 @@
 using namespace std;
 
 
-template<typename P, typename S> class CacheManager{
+template<class P, class S> class CacheManager{
 private:
 public:
     virtual S get(P problem) = 0;
