@@ -8,6 +8,7 @@
 #endif //EX4_SOLVER_H
 #pragma once
 #include <string>
+#include "Point.h"
 using namespace std;
 
 template<class P, class S> class Solver {

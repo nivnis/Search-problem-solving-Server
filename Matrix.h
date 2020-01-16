@@ -10,6 +10,7 @@
 #include "Searchable.h"
 #include "Point.h"
 #include <vector>
+#define NO_PATH -1
 using namespace std;
 
 
@@ -41,11 +42,50 @@ public:
 
     vector<State<Point> *> getAllPossibleStates(State<Point> *myState) override {
         vector<State<Point>*> myPossibleState;
-        int i = myState->getState().getLeft();
-        int j = myState->getState().getRight();
+        int i = myState->getState().getLeft(); // row
+        int j = myState->getState().getRight(); // column
 
         // first check that my point o my state is not out of rows and columns.
-        if
+        if ( i < 0 || j < 0 ||i >= rows || j >= columns){
+            perror("Out of bounce");
+            exit(1);
+        }
+        if(i != 0 && myMatrix[i-1][j]->getCost() != NO_PATH){
+            Point newPoint(i-1,j);
+            State<Point>* possibleNewState = getStateWithAPoint(newPoint);
+            if(possibleNewState->getCameFrom() == nullptr){
+                possibleNewState->setCameFrom(myState);
+            }
+            myPossibleState.push_back(possibleNewState);
+        }
+        if(j != 0 && myMatrix[i][j-1]->getCost() != NO_PATH){
+            Point newPoint(i,j-1);
+            State<Point>* possibleNewState = getStateWithAPoint(newPoint);
+            if(possibleNewState->getCameFrom() == nullptr){
+                possibleNewState->setCameFrom(myState);
+            }
+            myPossibleState.push_back(possibleNewState);
+        }
+        if(this->rows -1 != 0 && myMatrix[i+1][j]->getCost() != NO_PATH){
+            Point newPoint(i+1,j);
+            State<Point>* possibleNewState = getStateWithAPoint(newPoint);
+            if(possibleNewState->getCameFrom() == nullptr){
+                possibleNewState->setCameFrom(myState);
+            }
+            myPossibleState.push_back(possibleNewState);
+        }
+        if(this->columns -1 != 0 && myMatrix[i][j+1]->getCost() != NO_PATH){
+            Point newPoint(i,j+1);
+            State<Point>* possibleNewState = getStateWithAPoint(newPoint);
+            if(possibleNewState->getCameFrom() == nullptr){
+                possibleNewState->setCameFrom(myState);
+            }
+            myPossibleState.push_back(possibleNewState);
+        }
+        return myPossibleState;
+    }
+    State<Point>* getStateWithAPoint(Point thisPoint){
+        return myMatrix[thisPoint.getLeft()][thisPoint.getRight()];
     }
 
 
