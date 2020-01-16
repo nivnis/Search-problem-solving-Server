@@ -14,12 +14,19 @@ private:
     T state;
     double cost;
     State<T>* came_from;
+    double myPathCost;
 
 public:
+    // check if they are from state.
+    // check if they are from state.
+    // constructor with no cost.
+    State(T state) : state(state){
+        this->came_from = nullptr;
+        this->myPathCost = -1;
+    }
     // a state when we have a cost - like Astar or any algorithem with a cost.
-    State(T state, double cost){
+    State(T state, double cost) : state(state){
         this->cost = cost;
-        this->state = state;
         this->came_from = nullptr;
     }
     // check if they are from state.
@@ -30,10 +37,30 @@ public:
             return false;
         }
     }
-    T get_state() const(){
+    T getState() const {
         return this->state;
     }
 
+    void setCameFrom(State<T> *cameFrom) {
+        came_from = cameFrom;
+    }
+
+
+    double getCost() const {
+        return cost;
+    }
+
+    State<T> *getCameFrom() const {
+        return came_from;
+    }
+
+    void setState(T state) {
+        State::state = state;
+    }
+
+    void setCost(double cost) {
+        State::cost = cost;
+    }
 };
 
 
