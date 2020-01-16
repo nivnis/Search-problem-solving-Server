@@ -10,7 +10,7 @@
 #include <string>
 using namespace std;
 
-template<typename P, typename S> class Solver {
+template<class P, class S> class Solver {
 private:
 
 
