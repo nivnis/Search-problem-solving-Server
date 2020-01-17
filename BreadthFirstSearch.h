@@ -58,7 +58,7 @@ public:
                     }
                 }
             } else {
-                // its the goal state.
+                // its the goal state
                 this->costOfThePath = costOfThePath + currNode->getCost();
                 myPath.push_back(currNode);
                 for (int i = 0; i < theStateQueue.size(); i++) {
