@@ -17,7 +17,7 @@ string MatrixSolver::solve(Searchable<Point> *problem) {
 
 string MatrixSolver::returnPath(vector<State<Point> *> myPath) {
     if(myPath.empty()){
-        return "-1";
+        return "No Path Found.";
     }
     string myStringSolution;
     int sizeOfPath = myPath.size();

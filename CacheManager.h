@@ -6,6 +6,7 @@
 #define EX4_CACHEMANAGER_H
 #endif //EX4_CACHEMANAGER_H
 #include <string>
+#include <iostream>
 using namespace std;
 
 

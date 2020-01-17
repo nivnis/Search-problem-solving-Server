@@ -18,4 +18,3 @@ Point::Point(int right, int left) : right(right), left(left) {}
 const bool Point::operator==(const Point &otherPoint) const {
      return this->left == otherPoint.getLeft() && this->right == otherPoint.getRight();
 }
-/home/yuvallevy/CLionProjects/mivnim8

@@ -2,28 +2,27 @@
 // Created by yuvallevy on 17/01/2020.
 //
 
-#ifndef EX4_BREADFIRSTSEARCH_H
-#define EX4_BREADFIRSTSEARCH_H
+#ifndef EX4_DEPTHFIRSTSEARCH_H
+#define EX4_DEPTHFIRSTSEARCH_H
 
-#endif //EX4_BREADFIRSTSEARCH_H
+#endif //EX4_DEPTHFIRSTSEARCH_H
 
 #include "Searcher.h"
+#include <stack>
 template <class T>
-class BreadthFirstSearch : public Searcher<T>{
+class DepthFirstSearch : public Searcher<T>{
 private:
     double costOfThePath;
     int numberOfNodesVisitedTotal;
-
 public:
-    BreadthFirstSearch() {
+    DepthFirstSearch() {
         this->costOfThePath = 0;
         this->numberOfNodesVisitedTotal = 0;
-
     }
 
     vector<State<T> *> search(Searchable<T> *searchable) override {
-        // queue of states which we will push and pop during the algorithm.
-        queue<State<T>* > theStateQueue;
+        // stack of states which we will push and pop during the algorithm.
+        stack<State<T>* > theStateStack;
         // path of states to return.
         vector<State<T>* > myPath;
         vector<State<T>* > noPathFound;
@@ -37,11 +36,11 @@ public:
         State<T>* goalNode = searchable->getGoalState();
         currNode->setCameFrom(currNode);
         nodesBeenVisited.emplace(currNode);
-        theStateQueue.push(currNode);
-        // we will go over all the states in the queue until we finish.
-        while(!theStateQueue.empty()) {
-            currNode = theStateQueue.front();
-            theStateQueue.pop();
+        theStateStack.push(currNode);
+        // we will go over all the states in the stack until we finish.
+        while(!theStateStack.empty()) {
+            currNode = theStateStack.front();
+            theStateStack.pop();
             // increasing the number of node we visited in this problem by 1.
             this->numberOfNodesVisitedTotal = this->numberOfNodesVisitedTotal + 1;
             if (!currNode->equals_to(goalNode)) {
@@ -54,15 +53,15 @@ public:
                         // each node we didnt visit, we mark their dad node as out curr node.
                         optionalNode->setCameFrom(currNode);
                         nodesBeenVisited.emplace_back(optionalNode);
-                        theStateQueue.push(optionalNode);
+                        theStateStack.push(optionalNode);
                     }
                 }
-            } else {
+            }else {
                 // its the goal state.
                 this->costOfThePath = costOfThePath + currNode->getCost();
                 myPath.push_back(currNode);
-                for (int i = 0; i < theStateQueue.size(); i++) {
-                    // trace out way back with the states from goal to initial state.
+                // trace out way back with the states from goal to initial state.
+                for (int i = 0; i < theStateStack.size(); i++) {
                     if (currNode->equals_to(initialNode)) {
                         return myPath;
                     } else {
@@ -79,11 +78,11 @@ public:
     }
 
     double getNumOfNodesEvaluated() override {
-        return this->numberOfNodesVisitedTotal;
+        return this->numberOfNodesVisitedTotal
     }
 
     double getTheCostOfPath() override {
-        this->costOfThePath;
+        return this->costOfThePath;
     }
     bool thisNodeBeenVisited(vector<State<T>*> nodesBeenVisited, State<T>* currNode){
         for(State<T>* node : nodesBeenVisited) {

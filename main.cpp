@@ -8,7 +8,7 @@ using namespace std;
 
 int main() {
     Server* server = new MySerialServer();
-    CacheManager<string, string> *cacheManager = new FileCacheManager();
+    CacheManager<string, string> *cacheManager = new FileCacheManager<string, string>("stringSolution.txt");
     Solver<string, string> *solver = new StringReverser();
     ClientHandler *clientHandler = new MyTestClientHandler(cacheManager, solver);
 //    Server *server = new MySerialServer();
