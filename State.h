@@ -15,6 +15,7 @@ private:
     double cost;
     State<T>* came_from;
     double myPathCost;
+    double distanceTillState;
 
 public:
     // check if they are from state.
@@ -60,6 +61,14 @@ public:
 
     void setCost(double cost) {
         State::cost = cost;
+    }
+
+    void setDistanceTillState(double distanceTillState) {
+        distanceTillState = distanceTillState;
+    }
+
+    double getDistanceTillState() const {
+        return distanceTillState;
     }
 };
 

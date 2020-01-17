@@ -26,6 +26,7 @@ public:
         delete(openPriorityQueue);
     }
 
+
 protected:
     State<T> popOpenPriorityQueue() {
         State<T> state;

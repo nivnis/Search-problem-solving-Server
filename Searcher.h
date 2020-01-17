@@ -7,16 +7,19 @@
 
 
 #pragma once
-#include "ISearcher.h"
 #include <queue>
-
-template <class T> class Searcher : public ISearcher<T>{
+#include "State.h"
+#include "Searchable.h"
+template <class T> class Searcher{
 private:
-    int evaluatedNodes;
-protected:
-    void addNodeToEvaluatedNodes() {
-        evaluatedNodes++;
-    }
+//    int evaluatedNodes;
+public:
+    virtual vector<State<T>* > search(Searchable<T> *searchable) = 0;
+    virtual double getNumOfNodesEvaluated() = 0;
+    virtual double getTheCostOfPath() = 0;
+//    void addNodeToEvaluatedNodes() {
+//        evaluatedNodes++;
+//    }
 };
 
 

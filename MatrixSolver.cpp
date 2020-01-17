@@ -22,7 +22,7 @@ string MatrixSolver::returnPath(vector<State<Point> *> myPath) {
     string myStringSolution;
     int sizeOfPath = myPath.size();
     for(int i=0; i < sizeOfPath; i++){
-        myStringSolution.append(returnNextMove(myPath[i]->getState(), myPath[i+1]->getState()));
+        myStringSolution.append(returnNextMove(myPath.at(i)->getState(), myPath.at(i+1)->getState()));
         myStringSolution.append(",");
     }
     return myStringSolution;
