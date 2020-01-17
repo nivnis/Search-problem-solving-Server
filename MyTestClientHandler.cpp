@@ -54,7 +54,6 @@ void MyTestClientHandler::handleClient(int client_socket) {
         if (is_sent == -1) {
             std::cout << "Error sending message" << std::endl;
         }
-        problem = "";
 
     }
 
