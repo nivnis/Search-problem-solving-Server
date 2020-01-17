@@ -8,10 +8,9 @@
 
 #pragma once
 #include <queue>
-#include <hash_set>
+#include <unordered_set>
 #include "State.h"
 #include "Searchable.h"
-using namespace __gnu_cxx; // for hash_set
 
 template <class T> class Searcher{
 private:
