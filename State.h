@@ -31,8 +31,8 @@ public:
         this->came_from = nullptr;
     }
     // check if they are from state.
-    bool equals_to(State other_state){
-        if(this->state == other_state.get_state()){
+    bool equals_to(State* other_state){
+        if(this->state == other_state->getState()){
             return true;
         }else{
             return false;

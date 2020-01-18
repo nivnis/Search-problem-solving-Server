@@ -28,7 +28,6 @@ void MyTestClientHandler::handleClient(int client_socket) {
         char buffer[1024];
         bzero(buffer, 1024);
         string problem, curr_data, solution;
-
         //read from the simulator to the buffer
         int problemRead = read(client_socket, buffer, 1024);
         problem.append(buffer, problemRead);

@@ -36,7 +36,7 @@ public:
         // create our goal state for the algorithm.
         State<T>* goalNode = searchable->getGoalState();
         currNode->setCameFrom(currNode);
-        nodesBeenVisited.emplace(currNode);
+        nodesBeenVisited.push_back(currNode);
         theStateQueue.push(currNode);
         // we will go over all the states in the queue until we finish.
         while(!theStateQueue.empty()) {
@@ -83,7 +83,7 @@ public:
     }
 
     double getTheCostOfPath() override {
-        this->costOfThePath;
+        return this->costOfThePath;
     }
     bool thisNodeBeenVisited(vector<State<T>*> nodesBeenVisited, State<T>* currNode){
         for(State<T>* node : nodesBeenVisited) {

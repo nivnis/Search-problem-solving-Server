@@ -12,7 +12,7 @@ private:
     int right;
     int left;
 public:
-    Point(int right, int left);
+    Point(int left, int right);
 
 
     int getRight() const;

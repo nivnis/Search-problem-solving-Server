@@ -21,7 +21,7 @@ public:
 
     MatrixSolver(Searcher<Point> *myAlgorithmSearcher);
 
-}
+};
 
 
 #endif //EX4_MATRIXSOLVER_H

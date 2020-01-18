@@ -30,9 +30,9 @@ public:
         solutionsToMap();
     };
 //    ~FileCacheManager();
-    // need to pass the Porblem already hashed!!!
-    void save(P problemHashed, S theSolution){
-        string solutionHashed = hash_to_string(problemHashed);
+    void save(P problem, S theSolution){
+        string problemHashed = hash_to_string((string)problem);
+        string solutionHashed = hash_to_string(theSolution);
         this->my_cache[problemHashed] = solutionHashed;
         write_to_file(solutionHashed, problemHashed, theSolution);
     }
@@ -65,7 +65,8 @@ public:
     }
     // need to make sure we are sending the problem already hashed!
     bool has_solution(P problem){
-        if(my_cache.count((string)problem)){
+        string problemHashed = hash_to_string((string)problem);
+        if(my_cache.count((string)problemHashed)){
             return true;
         }else {
             return false;
@@ -73,9 +74,10 @@ public:
     }
     // need to pass the problem hashed already.
     string get(P problem){
+        string problemHashed = hash_to_string((string)problem);
         string solution;
         //obj = (*my_cache[key]).second;
-        solution = read_from_file(my_cache[problem]);
+        solution = read_from_file(my_cache[problemHashed]);
         return solution;
     }
 

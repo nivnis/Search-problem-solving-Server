@@ -66,7 +66,7 @@ public:
             }
             myPossibleState.push_back(possibleNewState);
         }
-        if(this->rows -1 != 0 && myMatrix[i+1][j]->getCost() != NO_PATH){
+        if(this->rows -1 != i && myMatrix[i+1][j]->getCost() != NO_PATH){
             Point newPoint(i+1,j);
             State<Point>* possibleNewState = getStateWithAPoint(newPoint);
             if(possibleNewState->getCameFrom() == nullptr){
@@ -74,7 +74,7 @@ public:
             }
             myPossibleState.push_back(possibleNewState);
         }
-        if(this->columns -1 != 0 && myMatrix[i][j+1]->getCost() != NO_PATH){
+        if(this->columns -1 != j && myMatrix[i][j+1]->getCost() != NO_PATH){
             Point newPoint(i,j+1);
             State<Point>* possibleNewState = getStateWithAPoint(newPoint);
             if(possibleNewState->getCameFrom() == nullptr){

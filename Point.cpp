@@ -13,7 +13,7 @@ int Point::getLeft() const {
     return left;
 }
 
-Point::Point(int right, int left) : right(right), left(left) {}
+Point::Point(int left,int right) : left(left),right(right) {}
 
 const bool Point::operator==(const Point &otherPoint) const {
      return this->left == otherPoint.getLeft() && this->right == otherPoint.getRight();
