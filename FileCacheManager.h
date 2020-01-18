@@ -32,13 +32,12 @@ public:
 //    ~FileCacheManager();
     void save(P problem, S theSolution){
         string problemHashed = hash_to_string((string)problem);
-        string solutionHashed = hash_to_string(theSolution);
-        this->my_cache[problemHashed] = solutionHashed;
-        write_to_file(solutionHashed, problemHashed, theSolution);
+        this->my_cache[problem] = problemHashed;
+        write_to_file(problem, problemHashed, theSolution);
     }
 
-    void write_to_file(S solutionHashed, P problemHashed, S theSolution){
-        string solutionNameFile =  (string)solutionHashed;
+    void write_to_file(P problem, P problemHashed, S theSolution){
+        string solutionNameFile =  (string)problemHashed;
         solutionNameFile.append(".txt");
         ofstream solutionFileStream;
         solutionFileStream.open(solutionNameFile, ios::out);
@@ -55,10 +54,8 @@ public:
             if (!matrixSolutionFileStream.is_open()) {
                 throw "Cant open file.";
             }else{
-                // saving the problem and the solution hashed in out big solution cache file.
-                matrixSolutionFileStream << (string) problemHashed;
-                matrixSolutionFileStream << "!";
-                matrixSolutionFileStream << (string) theSolution << endl;
+                // saving the problem and the problem hashed in out big solution cache file.
+                matrixSolutionFileStream << (string) problem << "!" << (string) problemHashed << endl;
                 solutionFileStream.close();
             }
         }
@@ -122,7 +119,7 @@ public:
             // There is no solutions yet so there is no such file.
             return;
         } else {
-            // each line is problem and solution divided by "!". we will add each pair to the cache map solutions.
+            // each line is problem and problem hashed divided by "!". we will add each pair to the cache map solutions.
             while(getline(solutionFileStream, line)){
                 std::size_t found = line.find("!");
                 string problem = line.substr(0, found);

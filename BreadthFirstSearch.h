@@ -60,18 +60,26 @@ public:
             } else {
                 // its the goal state
                 this->costOfThePath = costOfThePath + currNode->getCost();
-                myPath.push_back(currNode);
-                for (int i = 0; i < theStateQueue.size(); i++) {
+                myPath.insert(myPath.begin(), currNode);
+                while (!currNode->equals_to(initialNode)) {
                     // trace out way back with the states from goal to initial state.
-                    if (currNode->equals_to(initialNode)) {
-                        return myPath;
-                    } else {
-                        currNode = currNode->getCameFrom();
-                        // increasing the cost of the path from goal to initial state.
-                        this->costOfThePath = this->costOfThePath + currNode->getCost();
-                        myPath.push_back(currNode);
-                    }
+                    currNode = currNode->getCameFrom();
+                    // increasing the cost of the path from goal to initial state.
+                    this->costOfThePath = this->costOfThePath + currNode->getCost();
+                    myPath.insert(myPath.begin(), currNode);
                 }
+                return myPath;
+//                for (int i = 0; i < theStateQueue.size(); i++) {
+//                    // trace out way back with the states from goal to initial state.
+//                    if (currNode->equals_to(initialNode)) {
+//                        return myPath;
+//                    } else {
+//                        currNode = currNode->getCameFrom();
+//                        // increasing the cost of the path from goal to initial state.
+//                        this->costOfThePath = this->costOfThePath + currNode->getCost();
+//                        myPath.push_back(currNode);
+//                    }
+//                }
             }
         }
         // no path;

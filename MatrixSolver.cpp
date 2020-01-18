@@ -21,10 +21,11 @@ string MatrixSolver::returnPath(vector<State<Point> *> myPath) {
     }
     string myStringSolution;
     int sizeOfPath = myPath.size();
-    for(int i=0; i < sizeOfPath; i++){
+    for(int i=0; i < sizeOfPath -1; i++){
         myStringSolution.append(returnNextMove(myPath.at(i)->getState(), myPath.at(i+1)->getState()));
         myStringSolution.append(",");
     }
+    myStringSolution.erase(myStringSolution.size()-1);
     return myStringSolution;
 }
 
