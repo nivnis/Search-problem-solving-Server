@@ -9,15 +9,15 @@
 
 class Point {
 private:
-    int right;
-    int left;
+    int y;
+    int x;
 public:
     Point(int left, int right);
 
 
-    int getRight() const;
+    int getY() const;
 
-    int getLeft() const;
+    int getX() const;
 
     const bool operator==(const Point &otherPoint) const;
 };

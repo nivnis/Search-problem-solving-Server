@@ -21,4 +21,6 @@ public:
     virtual State<T>* getInitialState() = 0;
     virtual State<T>* getGoalState() = 0;
     virtual vector<State<T>*> getAllPossibleStates(State<T>* myState) = 0;
+    virtual bool isGoal(State<Point>* myState) = 0;
+    virtual double findDistance(State<T> *s1, State<T> *s2) = 0;
 };

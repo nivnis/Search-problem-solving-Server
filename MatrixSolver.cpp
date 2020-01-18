@@ -30,10 +30,10 @@ string MatrixSolver::returnPath(vector<State<Point> *> myPath) {
 
 // return the next move in string.
 string MatrixSolver::returnNextMove(Point prevPoint, Point thisPoint) {
-    int prevLeft = prevPoint.getLeft();
-    int prevRight = prevPoint.getRight();
-    int currLeft = thisPoint.getLeft();
-    int currRight = thisPoint.getRight();
+    int prevLeft = prevPoint.getX();
+    int prevRight = prevPoint.getY();
+    int currLeft = thisPoint.getX();
+    int currRight = thisPoint.getY();
     if(prevLeft < currLeft){
         return "DOWN";
     } else if (prevLeft > currLeft){

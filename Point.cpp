@@ -5,16 +5,16 @@
 #include "Point.h"
 
 
-int Point::getRight() const {
-    return right;
+int Point::getY() const {
+    return y;
 }
 
-int Point::getLeft() const {
-    return left;
+int Point::getX() const {
+    return x;
 }
 
-Point::Point(int left,int right) : left(left),right(right) {}
+Point::Point(int left,int right) : x(left), y(right) {}
 
 const bool Point::operator==(const Point &otherPoint) const {
-     return this->left == otherPoint.getLeft() && this->right == otherPoint.getRight();
+     return this->x == otherPoint.getX() && this->y == otherPoint.getY();
 }

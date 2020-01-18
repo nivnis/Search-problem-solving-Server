@@ -10,6 +10,7 @@
 #include "Searchable.h"
 #include "Point.h"
 #include <vector>
+#include <cmath>
 #define NO_PATH -1
 using namespace std;
 
@@ -42,8 +43,8 @@ public:
 
     vector<State<Point> *> getAllPossibleStates(State<Point> *myState) override {
         vector<State<Point>*> myPossibleState;
-        int i = myState->getState().getLeft(); // row
-        int j = myState->getState().getRight(); // column
+        int i = myState->getState().getX(); // row
+        int j = myState->getState().getY(); // column
 
         // first check that my point o my state is not out of rows and columns.
         if ( i < 0 || j < 0 ||i >= rows || j >= columns){
@@ -85,9 +86,15 @@ public:
         return myPossibleState;
     }
     State<Point>* getStateWithAPoint(Point thisPoint){
-        return myMatrix[thisPoint.getLeft()][thisPoint.getRight()];
+        return myMatrix[thisPoint.getX()][thisPoint.getY()];
     }
 
+    double findDistance(State<Point> *s1, State<Point> *s2) override {
+        double xDistance = abs(s1->getState().getX() - s2->getState().getX());
+        double yDistance = abs(s1->getState().getY() - s2->getState().getY());
+        // returns the distance between the two states
+        return  sqrt(pow((xDistance), 2) + pow(yDistance, 2));
+    }
 
     bool isGoal(State<Point>* myState){
         return this->goalState == myState;

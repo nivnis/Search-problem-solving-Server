@@ -70,7 +70,7 @@ public:
             currState = popFromOpen();
             closed.insert(currState);
             //if we reached the goalState
-            if(currState->equals_to(goalState)) {
+            if(searchable->isGoal(currState)) {
                 backTrace();
                 return path;
             }
