@@ -11,6 +11,8 @@
 #include <unordered_set>
 #include "State.h"
 #include "Searchable.h"
+#include <set>
+#include <iterator>
 
 template <class T> class Searcher{
 private:
