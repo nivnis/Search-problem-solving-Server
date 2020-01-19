@@ -85,7 +85,7 @@ public:
                     s->setCost(newPathCost);
                     open.emplace(s);
                 }
-                    //not the first time we meet this node - check if the new cost is better than the current one
+                //not the first time we meet this node - check if the new cost is better than the current one
                 else if(s->getCost() > newPathCost) {
                     s->setCost(newPathCost);
                     s->setCameFrom(currState);

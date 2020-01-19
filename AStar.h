@@ -82,15 +82,20 @@ public:
             vector<State<T>*> successors = searchable->getAllPossibleStates(currState);
             for(State<T> * s : successors) {
                 double newPathCost = currState->getCost() + s->getCost();
+                //heuristic value of the successor
+                double nodeHeuristicValue = searchable->findDistance(s, goalState);
+                double totalPathCost = newPathCost + nodeHeuristicValue;
                 //it's the first time we meet this node (state)
                 if(!isInPriorityQueue(open, s) && !isInUnorderedSet(closed, s)) {
                     s->setCameFrom(currState);
                     s->setCost(newPathCost);
+                    s->setDistanceTillState(nodeHeuristicValue);
                     open.emplace(s);
                 }
-                    //not the first time we meet this node - check if the new cost is better than the current one
-                else if(s->getCost() > newPathCost) {
+                //not the first time we meet this node - check if the new cost is better than the current one
+                else if((s->getCost() + s->getDistanceTillState()) > totalPathCost) {
                     s->setCost(newPathCost);
+                    s->setDistanceTillState(nodeHeuristicValue);
                     s->setCameFrom(currState);
                     open.emplace(s);
                 }
