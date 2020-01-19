@@ -63,12 +63,33 @@ public:
         State::cost = cost;
     }
 
-    void setDistanceTillState(double distanceTillState) {
+    void setHeuristicDistance(double distanceTillState) {
         distanceTillState = distanceTillState;
     }
 
-    double getDistanceTillState() const {
+    double getHeuristicDistance() const {
         return distanceTillState;
+    }
+
+    //operator overloading below to check inequalities between the costs of each state.
+    const bool operator==(const State &other) {
+        return (this->cost == other.getCost());
+    }
+
+    const bool operator<(const State &other) {
+        return (this->getCost() < other.getCost());
+    }
+
+    const bool operator>(const State &other) {
+        return (this->getCost() > other.getCost());
+    }
+
+    const bool operator<=(const State &other) {
+        return (this->getCost() <= other.getCost());
+    }
+
+    const bool operator>=(const State &other) {
+        return (this->getCost() >= other.getCost());
     }
 };
 

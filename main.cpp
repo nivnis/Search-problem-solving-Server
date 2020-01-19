@@ -6,17 +6,18 @@
 #include "MatrixSolver.h"
 #include "BreadthFirstSearch.h"
 #include "MyMatrixClientHandler.h"
-#include "DepthFirstSearch.h"
+#include "BestFirstSearch.h"
 
 using namespace std;
 
+#include <set>
 int main() {
     Server* server = new MySerialServer();
-    Searcher<Point>* algorithm = new DepthFirstSearch<Point>();
+    Searcher<Point>* algorithm = new BestFirstSearch<Point>();
     MatrixSolver* matrixSolver = new MatrixSolver(algorithm);
     MyMatrixClientHandler* myMatrixClientHandler = new MyMatrixClientHandler(matrixSolver);
 //    Server *server = new MySerialServer();
-    server->open(5610, myMatrixClientHandler);
+    server->open(5601, myMatrixClientHandler);
     return 0;
 }
 

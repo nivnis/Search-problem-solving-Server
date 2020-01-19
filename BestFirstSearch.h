@@ -3,23 +3,24 @@
 //
 #ifndef EX4_BESTFIRSTSEARCH_H
 #define EX4_BESTFIRSTSEARCH_H
-
+#pragma once
 #include "Searcher.h"
 
 template<class T>
 class BestFirstSearch : public Searcher<T> {
 private:
-    //inner class to sort the priority queue from lowest cost to biggest.
+    //inner class to sort the ordered set from lowest cost to biggest.
     class StateComparator {
     public:
         bool operator()(State<T> *left, State<T> *right) {
-            return (left->getPathCost() > right->getPathCost());
+            return (left->getCost() < right->getCost());
         }
+
     };
     double costOfThePath;
     int numberOfNodesVisitedTotal;
     State<T> *goalState, *initialState, *currState;
-    priority_queue<State<T> *, vector<State<T> *>, StateComparator> open;
+    set <State<T> *, StateComparator > open;
     unordered_set <State<T> *> closed;
     vector<State<T> *> path;
 public:
@@ -27,10 +28,11 @@ public:
         this->costOfThePath = 0;
         this->numberOfNodesVisitedTotal = 0;
     }
-    State<T>* popFromOpen() {
+
+    State<T>* getLowestFromOpen() {
         State<T>* state;
-        state = open.top();
-        open.pop();
+        state = *open.begin();
+        open.erase(state);
         //here i should increase the num of nodes evaluated
         numberOfNodesVisitedTotal++;
         return state;
@@ -46,28 +48,24 @@ public:
         }
     }
 
-    bool isInPriorityQueue( priority_queue<State<T> *, vector<State<T> *>, StateComparator> pq, State<T> * wantedNode) {
-        while (!pq.empty()) {
-            if(pq.top()->equals_to(wantedNode)) {
-                return true;
-            }
-            pq.pop();
-        }
-        return false;
+    bool isInOpen(set <State<T> *, StateComparator > s, State<T> * wantedNode) {
+        //return s.count(wantedNode) != 0;
+        return s.find(wantedNode) != s.end();
     }
 
     bool isInUnorderedSet(unordered_set <State<T> *> unorderedSet, State<T> * wantedNode) {
-        return unorderedSet.count(wantedNode) != 0;
+        return unorderedSet.find(wantedNode) != unorderedSet.end();
     }
+
 
     vector<State<T> *> search(Searchable<T> *searchable) override {
         initialState = searchable->getInitialState();
         goalState = searchable->getGoalState();
-        open.push(initialState);
+        open.insert(initialState);
         initialState->setCameFrom(initialState);
 
-        while (open.size() > 0) {
-            currState = popFromOpen();
+        while (!open.empty()) {
+            currState = getLowestFromOpen();
             closed.insert(currState);
             //if we reached the goalState
             if(searchable->isGoal(currState)) {
@@ -80,28 +78,28 @@ public:
             for(State<T> * s : successors) {
                 double newPathCost = currState->getCost() + s->getCost();
                 //it's the first time we meet this node (state)
-                if(!isInPriorityQueue(open, s) && !isInUnorderedSet(closed, s)) {
+                if(!isInOpen(open, s) && !isInUnorderedSet(closed, s)) {
                     s->setCameFrom(currState);
                     s->setCost(newPathCost);
-                    open.emplace(s);
+                    open.insert(s);
                 }
                 //not the first time we meet this node - check if the new cost is better than the current one
                 else if(s->getCost() > newPathCost) {
                     s->setCost(newPathCost);
                     s->setCameFrom(currState);
-                    open.emplace(s);
+                    open.insert(s);
                 }
             }
         }
         return path;
     }
 
-    double getCostOfThePath() const {
-        return costOfThePath;
+    double getNumOfNodesEvaluated() override {
+        return numberOfNodesVisitedTotal;
     }
 
-    int getNumberOfNodesVisitedTotal() const {
-        return numberOfNodesVisitedTotal;
+    double getTheCostOfPath() override {
+        return costOfThePath;
     }
 
 };
