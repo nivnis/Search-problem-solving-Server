@@ -24,6 +24,7 @@ private:
 
 public:
     MyMatrixClientHandler(MatrixSolver* matrixSolver1);
+//    MyMatrixClientHandler(const MatrixSolver& copyMatrixSolver1);
     void handleClient(int client_socket) override;
     Matrix* createMatrix(vector<string> problemString);
     vector<string> readFromBuffer(int client_socket);

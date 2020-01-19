@@ -8,8 +8,14 @@ MyMatrixClientHandler::MyMatrixClientHandler(MatrixSolver* matrixSolver1) {
     this->myCache = new FileCacheManager<string, string>(this->solutionMatrixNameFile);
     this->matrixSolver = matrixSolver1;
 }
+//MyMatrixClientHandler::MyMatrixClientHandler(const MyMatrixClientHandler& copyMyMatrixClientHandler) {
+//    this->myCache = new FileCacheManager<string, string>(this->solutionMatrixNameFile);
+//    this->matrixSolver = matrixSolver(copyMyMatrixClientHandler.matrixSolver);
+//}
 
 void MyMatrixClientHandler::handleClient(int client_socket) {
+    // reading from buffer and getting the matrix as vector of strings.
+    // creating a matrix out of the vector.
     vector<string> problemAsLongString = readFromBuffer(client_socket);
     Matrix* myMatrix = createMatrix(problemAsLongString);
     string solution;
@@ -31,16 +37,18 @@ void MyMatrixClientHandler::handleClient(int client_socket) {
     }
 
 }
-
+// creating the matrix = the problem.
 Matrix* MyMatrixClientHandler::createMatrix(vector<string> problemString){
     vector<State<Point> *> lineInMatrix;
     vector<vector<State<Point> *>> myMatrixVectors;
     vector<int> stateVal;
     vector<int> goal = divideStringByComma(problemString[problemString.size()-1]);
     vector<int> initial = divideStringByComma(problemString[problemString.size()-2]);
+    // the goal point of the matrix.
     Point goalPoint(goal[0], goal[1]);
+    // the initial point of the matrix.
     Point initialPoint(initial[0], initial[1]);
-
+    // creating each line of the vector string and creating a line of states for the matrix.
     for (int i = 0; i<problemString.size() - 2; i++){
         stateVal = divideStringByComma(problemString[i]);
         for(int k = 0; k< stateVal.size(); k++){
@@ -51,10 +59,11 @@ Matrix* MyMatrixClientHandler::createMatrix(vector<string> problemString){
         myMatrixVectors.push_back(lineInMatrix);
         lineInMatrix.clear();
     }
+    // the matrix to return.
     Matrix* matrix = new Matrix(initialPoint, goalPoint, myMatrixVectors);
     return matrix;
 }
-
+// a func that gets a line of the matrix and convert it into a vector of costs.
 vector<int> MyMatrixClientHandler:: divideStringByComma(string lineMatrix){
     vector<int> returnLine;
     int stop,i;
@@ -89,17 +98,22 @@ vector<string> MyMatrixClientHandler::readFromBuffer(int client_socket){
         if(checkChar < 0){
             perror("Couldn't read");
         }
+        // read each time until reaching "\n".
         while(buffer[0] != '\n') {
             line.append(buffer);
             read(client_socket, &buffer, 1);
         }
+        // removing spaces.
         lineWithOutpaces = removeSpaces(line);
+        // if reached "end" - we finished reading the problem.
         found = line.find("end");
         if (found != string::npos)
             break;
+        // updating our member which is the problem as one long string.
         this->theProbAsOnlyString.append(lineWithOutpaces);
         // adding extra comma between each line of matrix.
         this->theProbAsOnlyString.append(",");
+        // adding the line of the matrix we just read to the vector of strings.
         problemWithString.push_back(lineWithOutpaces);
     }
     this->theProbAsOnlyString.pop_back();

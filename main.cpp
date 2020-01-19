@@ -16,7 +16,7 @@ int main() {
     MatrixSolver* matrixSolver = new MatrixSolver(algorithm);
     MyMatrixClientHandler* myMatrixClientHandler = new MyMatrixClientHandler(matrixSolver);
 //    Server *server = new MySerialServer();
-    server->open(5610, myMatrixClientHandler);
+    server->open(5600, myMatrixClientHandler);
     return 0;
 }
 

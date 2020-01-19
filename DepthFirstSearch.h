@@ -92,6 +92,7 @@ public:
     double getTheCostOfPath() override {
         return this->costOfThePath;
     }
+    // checking if a node was already been visited at the visited vector.
     bool thisNodeBeenVisited(vector<State<T>*> nodesBeenVisited, State<T>* currNode){
         for(State<T>* node : nodesBeenVisited) {
             if (node->equals_to(currNode)) {
