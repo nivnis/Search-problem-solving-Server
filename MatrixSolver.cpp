@@ -27,6 +27,7 @@ string MatrixSolver::returnPath(vector<State<Point> *> myPath) {
     // going over the states.
     for(int i=0; i < sizeOfPath -1; i++){
         myStringSolution.append(returnNextMove(myPath.at(i)->getState(), myPath.at(i+1)->getState()));
+        myStringSolution.append(to_string((myPath.at(i)->getCost()+myPath.at(i+1)->getCost())));
         myStringSolution.append(",");
     }
     myStringSolution.erase(myStringSolution.size()-1);
