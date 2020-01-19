@@ -35,11 +35,11 @@ public:
         // create our goal state for the algorithm.
         State<T>* goalNode = searchable->getGoalState();
         currNode->setCameFrom(currNode);
-        nodesBeenVisited.emplace(currNode);
+        nodesBeenVisited.push_back(currNode);
         theStateStack.push(currNode);
         // we will go over all the states in the stack until we finish.
         while(!theStateStack.empty()) {
-            currNode = theStateStack.front();
+            currNode = theStateStack.top();
             theStateStack.pop();
             // increasing the number of node we visited in this problem by 1.
             this->numberOfNodesVisitedTotal = this->numberOfNodesVisitedTotal + 1;
@@ -52,7 +52,7 @@ public:
                     } else {
                         // each node we didnt visit, we mark their dad node as out curr node.
                         optionalNode->setCameFrom(currNode);
-                        nodesBeenVisited.emplace_back(optionalNode);
+                        nodesBeenVisited.push_back(optionalNode);
                         theStateStack.push(optionalNode);
                     }
                 }
@@ -86,7 +86,7 @@ public:
     }
 
     double getNumOfNodesEvaluated() override {
-        return this->numberOfNodesVisitedTotal
+        return this->numberOfNodesVisitedTotal;
     }
 
     double getTheCostOfPath() override {

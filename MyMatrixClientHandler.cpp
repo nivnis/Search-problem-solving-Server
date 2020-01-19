@@ -98,8 +98,11 @@ vector<string> MyMatrixClientHandler::readFromBuffer(int client_socket){
         if (found != string::npos)
             break;
         this->theProbAsOnlyString.append(lineWithOutpaces);
+        // adding extra comma between each line of matrix.
+        this->theProbAsOnlyString.append(",");
         problemWithString.push_back(lineWithOutpaces);
     }
+    this->theProbAsOnlyString.pop_back();
     return problemWithString;
 }
 
