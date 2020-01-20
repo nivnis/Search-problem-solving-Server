@@ -11,7 +11,6 @@
 #include <cstring>
 #include <vector>
 #include <thread>
-#endif //EX4_MYSERIALSERVER_H
 #include "ClientHandler.h"
 #pragma once
 
@@ -25,6 +24,8 @@ private:
     int client_socket;
 public:
     MySerialServer();
-    void open(int port, ClientHandler *myTestClientHandler);
+    void open(int port, ClientHandler &myTestClientHandler) override;
     void stop();
 };
+
+#endif //EX4_MYSERIALSERVER_H

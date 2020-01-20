@@ -11,7 +11,7 @@ class BestFirstSearch : public Searcher<T> {
     int numOfNodes;
     double totalPathCost;
     //inner class to use in the priority queue in the algorithm.
-    class StateCompare {
+    class StateComparator {
     public:
         bool operator()(State<T> *left, State<T> *right) {
             return (left->getPathCost() > right->getPathCost());
@@ -19,42 +19,31 @@ class BestFirstSearch : public Searcher<T> {
     };
 
 public:
-
     BestFirstSearch(){
         numOfNodes = 0;
         totalPathCost = 0;
     }
-    /**
-     * Checks whether or not a specific node has been visited during the BFS algorithm.
-     * @param nodesVec - vector of nodes that have been visited.
-     * @param node - node to check if visited.
-     * @return - true if it is false otherwise.
-     */
 
-
-    /**
-     * Checks whether or not a specific state is in the priority queue. If so, returns true else false.
-     */
     bool isNodeInQueue(
-            priority_queue<State<T> *, vector<State<T> *>, StateCompare> priorityQueue,
+            priority_queue<State<T> *, vector<State<T> *>, StateComparator> pq,
             State<T> *node) {
         //goes over the queue until it's empty.
-        while (!priorityQueue.empty()) {
-            if (node->equals_to(priorityQueue.top())) {
+        while (!pq.empty()) {
+            if (node->equals_to(pq.top())) {
                 return true;
             }
-            priorityQueue.pop();
+            pq.pop();
         }
         return false;
     }
 
     vector<State<T> *> search(Searchable<T> *searchable) override {
-        resetMembers();
+        reset();
         //keeps the nodes we've already traveled in
-        vector<State<T> *> nodesVisited;
+        vector<State<T> *> visitedNodes;
         //keeps the nodes we need to travel in. sorts the nodes from the ones with the lowest path-cost to the highest
         // one
-        priority_queue<State<T> *, vector<State<T> *>, StateCompare> open;
+        priority_queue<State<T> *, vector<State<T> *>, StateComparator> open;
         //the final path from the source node to the destination node
         vector<State<T> *> path;
         State<T> *currentState = searchable->getInitialState();
@@ -90,9 +79,9 @@ public:
                      * if the node was already visited and we dont need to find a cheaper way to it - continue,
                      * but if the node was already visited and we can to find a cheaper way to it - check
                      */
-                    if (hasNodeBeenVisited(nodesVisited, adj) ||
+                    if (this->hasNodeBeenVisited(visitedNodes, adj) ||
                         isNodeInQueue(open, adj)) {
-                        if (!hasNodeBeenVisited(nodesVisited, adj)
+                        if (!this->hasNodeBeenVisited(visitedNodes, adj)
                             && isNodeInQueue(open, adj)) {
                             //compares the lowest cost of the same State with 2 different paths to it.
                             if (adjPathCost < adj->getPathCost()) {
@@ -110,15 +99,15 @@ public:
                         open.emplace(adj);
                     }
                 }
-                //insert the current node to nodesVisited to make sure we dont check it again
-                nodesVisited.emplace_back(currentState);
+                //insert the current node to visitedNodes to make sure we dont check it again
+                visitedNodes.emplace_back(currentState);
             }
         }
         //could not find path from requested initial to goal.
         return path;
     }
 
-    void resetMembers(){
+    void reset(){
         this->totalPathCost = 0;
         this->numOfNodes = 0;
     }

@@ -18,15 +18,14 @@
 class MyParallelServer : public Server{
 private:
     queue<thread> myThreadQueue;
-    int client_socket;
-    int port;
+    int server_socket;
 public:
     MyParallelServer();
     void open(int port, ClientHandler &clientHandler) override;
-
     void stop() override;
+    void runParallelServer(ClientHandler &cHandler);
+    void runClientsWithThreads(int c_socket, ClientHandler &clientHandler);
 
 };
-
 
 #endif //EX4_MYPARALLELSERVER_H
