@@ -18,6 +18,7 @@
 class MyParallelServer : public Server{
 private:
     queue<thread> myThreadQueue;
+    int server_socket;
     int client_socket;
     int port;
 public:
@@ -27,6 +28,5 @@ public:
     void stop() override;
 
 };
-
 
 #endif //EX4_MYPARALLELSERVER_H

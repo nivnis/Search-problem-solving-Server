@@ -7,7 +7,7 @@ MySerialServer::MySerialServer(){
 }
 
 void MySerialServer::open(int port, ClientHandler *myTestClientHandler){
-    int timeout_in_seconds = 10;
+    int timeout_in_seconds = 120;
     this->port = port;
 //create socket
     int socketfd = socket(AF_INET, SOCK_STREAM, 0);

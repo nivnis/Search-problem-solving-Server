@@ -11,7 +11,6 @@
 #include <cstring>
 #include <vector>
 #include <thread>
-#endif //EX4_MYSERIALSERVER_H
 #include "ClientHandler.h"
 #pragma once
 
@@ -28,3 +27,5 @@ public:
     void open(int port, ClientHandler *myTestClientHandler);
     void stop();
 };
+
+#endif //EX4_MYSERIALSERVER_H
