@@ -28,6 +28,7 @@ public:
             }
         }
         return false;
+
     }
 //    void addNodeToEvaluatedNodes() {
 //        evaluatedNodes++;
