@@ -62,7 +62,9 @@ public:
     void setCost(double cost) {
         State::cost = cost;
     }
-////////////////////////////////////////////////////
+    //comment
+
+    ////////////////////////////////////////////////////
     void setPathCost(double pathCost) {
         State::myPathCost = pathCost;
     }

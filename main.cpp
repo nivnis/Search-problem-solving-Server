@@ -10,7 +10,7 @@
 #include "AStar.h"
 
 using namespace std;
-
+//comment
 int main() {
     Server* server = new MySerialServer();
     Searcher<Point>* algorithm = new AStar<Point>();
