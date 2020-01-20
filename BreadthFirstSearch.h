@@ -48,7 +48,7 @@ public:
                 // its not the goal state.
                 // check all the neighbors of our curr node if we visited them or not.
                 for (State<T> *optionalNode : searchable->getAllPossibleStates(currNode)) {
-                    if (thisNodeBeenVisited(nodesBeenVisited, optionalNode)) {
+                    if (this->hasNodeBeenVisited(nodesBeenVisited, optionalNode)) {
                         continue;
                     } else {
                         // each node we didnt visit, we mark their dad node as out curr node.
@@ -95,13 +95,5 @@ public:
     double getTheCostOfPath() override {
         return this->costOfThePath;
     }
-    // checking if a node was already been visited at the visited vector.
-    bool thisNodeBeenVisited(vector<State<T>*> nodesBeenVisited, State<T>* currNode){
-        for(State<T>* node : nodesBeenVisited) {
-            if (node->equals_to(currNode)) {
-                return true;
-            }
-        }
-        return false;
-    }
+
 };
