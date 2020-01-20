@@ -19,13 +19,12 @@ class MyParallelServer : public Server{
 private:
     queue<thread> myThreadQueue;
     int server_socket;
-    int port;
 public:
     MyParallelServer();
     void open(int port, ClientHandler &clientHandler) override;
     void stop() override;
-    void runParalleServer(ClientHandler &cHandler);
-    void runClinetsWithThreads(int c_socket, ClientHandler &clientHandler);
+    void runParallelServer(ClientHandler &cHandler);
+    void runClientsWithThreads(int c_socket, ClientHandler &clientHandler);
 
 };
 

@@ -14,11 +14,11 @@ using namespace std;
 #include <set>
 int main() {
     Server* server = new MySerialServer();
-    Searcher<Point>* algorithm = new AStar<Point>();
+    Searcher<Point>* algorithm = new BestFirstSearch<Point>();
     MatrixSolver* matrixSolver = new MatrixSolver(algorithm);
     MyMatrixClientHandler* myMatrixClientHandler = new MyMatrixClientHandler(matrixSolver);
 //    Server *server = new MySerialServer();
-    server->open(5605, myMatrixClientHandler);
+    server->open(5605, *myMatrixClientHandler);
     return 0;
 }
 

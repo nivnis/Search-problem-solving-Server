@@ -88,9 +88,9 @@ public:
                      * if the node was already visited and we dont need to find a cheaper way to it - continue,
                      * but if the node was already visited and we can to find a cheaper way to it - check
                      */
-                    if (hasNodeBeenVisited(nodesVisited, adj) ||
+                    if (this->hasNodeBeenVisited(nodesVisited, adj) ||
                         isNodeInQueue(open, adj)) {
-                        if (!hasNodeBeenVisited(nodesVisited, adj)
+                        if (!this->hasNodeBeenVisited(nodesVisited, adj)
                             && isNodeInQueue(open, adj)) {
                             //compares the lowest cost of the same State with 2 different paths to it.
                             if (adjPathCost < adj->getPathCost()) {

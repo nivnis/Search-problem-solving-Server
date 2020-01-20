@@ -9,8 +9,6 @@ MyParallelServer::MyParallelServer(){
 }
 
 void MyParallelServer::open(int port, ClientHandler &clientHandler) {
-    this->port = port;
-    int timeout_in_seconds = 240.0;
 //create socket
     int socketfd = socket(AF_INET, SOCK_STREAM, 0);
     if (socketfd == -1) {
@@ -41,10 +39,10 @@ void MyParallelServer::open(int port, ClientHandler &clientHandler) {
         std::cout<<"Server is now listening ..."<<std::endl;
     }
     this->server_socket = socketfd;
-    runParalleServer(clientHandler);
+    runParallelServer(clientHandler);
 }
 
-void MyParallelServer::runParalleServer(ClientHandler &cHandler) {
+void MyParallelServer::runParallelServer(ClientHandler &cHandler) {
     // from here we start the clients.
     int client_socket;
     int clilentLen;
@@ -54,13 +52,7 @@ void MyParallelServer::runParalleServer(ClientHandler &cHandler) {
     timeOut.tv_usec = 0;
 
     while(true) {
-//        struct timeval tv;
-//        tv.tv_sec = 0;
-//        setsockopt(server_socket, SOL_SOCKET, SO_RCVTIMEO, (const char *) &tv, sizeof tv);
-//        int newSocket;
-//        int addrlen = sizeof(address);
         timeOut.tv_sec = 0;
-
 
         /* Accept actual connection from the client */
         client_socket = accept(server_socket, (struct sockaddr *) &cli_addr, (socklen_t *) &clilentLen);
@@ -73,20 +65,28 @@ void MyParallelServer::runParalleServer(ClientHandler &cHandler) {
             exit(1);
         }
 
-        runClinetsWithThreads(client_socket, cHandler);
+        if (setsockopt(client_socket, SOL_SOCKET, SO_RCVTIMEO, (char *)&timeOut, sizeof(timeOut)) < 0)   {
+            perror("ERROR on setting timeOut");
+            exit(1);
+        }
+        runClientsWithThreads(client_socket, cHandler);
 
+        timeOut.tv_sec = 1;
 
-
-
+        if (setsockopt(client_socket, SOL_SOCKET, SO_RCVTIMEO, (char *)&timeOut, sizeof(timeOut)) < 0)   {
+            perror("ERROR on setting timeOut");
+            exit(1);
+        }
     }
+    stop();
 }
 
 static void handleAClient(int c_socket, ClientHandler *clientHandler) {
-
+    clientHandler->handleClient(c_socket);
 }
 
-void MyParallelServer::runClinetsWithThreads(int client_socket, ClientHandler &clientHandler) {
-    this->myThreadQueue.push(thread(handleAClient, client_socket, &clientHandler));
+void MyParallelServer::runClientsWithThreads(int c_socket, ClientHandler &clientHandler) {
+    this->myThreadQueue.push(thread(handleAClient, c_socket, &clientHandler));
 }
 
 void MyParallelServer::stop() {
