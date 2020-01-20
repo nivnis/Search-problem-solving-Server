@@ -25,10 +25,12 @@ string MatrixSolver::returnPath(vector<State<Point> *> myPath) {
     string myStringSolution;
     int sizeOfPath = myPath.size();
     // going over the states.
+    int count = (myPath.at(0)->getCost());
     for(int i=0; i < sizeOfPath -1; i++){
+        count+=int(myPath.at(i+1)->getCost());
         myStringSolution.append(returnNextMove(myPath.at(i)->getState(), myPath.at(i+1)->getState()));
         myStringSolution.append("(");
-        myStringSolution.append(to_string((myPath.at(i)->getCost()+myPath.at(i+1)->getCost())));
+        myStringSolution.append(to_string(count));
         myStringSolution.append(")");
         myStringSolution.append(",");
     }

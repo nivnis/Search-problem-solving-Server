@@ -26,8 +26,8 @@ private:
 
 public:
     Matrix(Point initialPoint, Point goalPoint, vector<vector<State<Point>* >> matrix){
-        this->initialState = new State<Point>(initialPoint);
-        this->goalState = new State<Point>(goalPoint);
+        this->initialState = new State<Point>(initialPoint, matrix[initialPoint.getX()][initialPoint.getY()]->getCost());
+        this->goalState = new State<Point>(goalPoint, matrix[goalPoint.getX()][goalPoint.getY()]->getCost());
         this->myMatrix = matrix;
         this->rows = matrix.size();
         this->columns = matrix[0].size();
@@ -51,16 +51,16 @@ public:
             perror("Out of bounce");
             exit(1);
         }
-        if(j != 0 && myMatrix[i][j-1]->getCost() != NO_PATH){
-            Point newPoint(i,j-1);
+        if(i != 0 && myMatrix[i-1][j]->getCost() != NO_PATH){
+            Point newPoint(i-1,j);
             State<Point>* possibleNewState = getStateWithAPoint(newPoint);
             if(possibleNewState->getCameFrom() == nullptr){
                 possibleNewState->setCameFrom(myState);
             }
             myPossibleState.push_back(possibleNewState);
         }
-        if(i != 0 && myMatrix[i-1][j]->getCost() != NO_PATH){
-            Point newPoint(i-1,j);
+        if(j != 0 && myMatrix[i][j-1]->getCost() != NO_PATH){
+            Point newPoint(i,j-1);
             State<Point>* possibleNewState = getStateWithAPoint(newPoint);
             if(possibleNewState->getCameFrom() == nullptr){
                 possibleNewState->setCameFrom(myState);

@@ -21,6 +21,14 @@ public:
     virtual vector<State<T>* > search(Searchable<T> *searchable) = 0;
     virtual double getNumOfNodesEvaluated() = 0;
     virtual double getTheCostOfPath() = 0;
+    bool hasNodeBeenVisited(vector<State<T> *> nodesVec, State<T> *node) {
+        for (State<T> *state : nodesVec) {
+            if (state->equals_to(node)) {
+                return true;
+            }
+        }
+        return false;
+    }
 //    void addNodeToEvaluatedNodes() {
 //        evaluatedNodes++;
 //    }
