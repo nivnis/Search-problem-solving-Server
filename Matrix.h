@@ -26,8 +26,8 @@ private:
 
 public:
     Matrix(Point initialPoint, Point goalPoint, vector<vector<State<Point>* >> matrix){
-        this->initialState = new State<Point>(initialPoint);
-        this->goalState = new State<Point>(goalPoint);
+        this->initialState = new State<Point>(initialPoint, matrix[initialPoint.getX()][initialPoint.getY()]->getCost());
+        this->goalState = new State<Point>(goalPoint, matrix[goalPoint.getX()][goalPoint.getY()]->getCost());
         this->myMatrix = matrix;
         this->rows = matrix.size();
         this->columns = matrix[0].size();

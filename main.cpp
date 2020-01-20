@@ -7,17 +7,17 @@
 #include "BreadthFirstSearch.h"
 #include "MyMatrixClientHandler.h"
 #include "BestFirstSearch.h"
+#include "AStar.h"
 
 using namespace std;
-
-#include <set>
+//comment
 int main() {
     Server* server = new MySerialServer();
-    Searcher<Point>* algorithm = new BestFirstSearch<Point>();
+    Searcher<Point>* algorithm = new AStar<Point>();
     MatrixSolver* matrixSolver = new MatrixSolver(algorithm);
     MyMatrixClientHandler* myMatrixClientHandler = new MyMatrixClientHandler(matrixSolver);
 //    Server *server = new MySerialServer();
-    server->open(5601, myMatrixClientHandler);
+    server->open(5600, myMatrixClientHandler);
     return 0;
 }
 
