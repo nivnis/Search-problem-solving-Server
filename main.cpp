@@ -7,6 +7,7 @@
 #include "BreadthFirstSearch.h"
 #include "MyMatrixClientHandler.h"
 #include "BestFirstSearch.h"
+#include "DepthFirstSearch.h"
 #include "AStar.h"
 
 using namespace std;
@@ -14,7 +15,7 @@ using namespace std;
 #include <set>
 int main() {
     Server* server = new MySerialServer();
-    Searcher<Point>* algorithm = new AStar<Point>();
+    Searcher<Point>* algorithm = new DepthFirstSearch<Point>();
     MatrixSolver* matrixSolver = new MatrixSolver(algorithm);
     MyMatrixClientHandler* myMatrixClientHandler = new MyMatrixClientHandler(matrixSolver);
 //    Server *server = new MySerialServer();

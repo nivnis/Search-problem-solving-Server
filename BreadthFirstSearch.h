@@ -68,6 +68,8 @@ public:
                     this->costOfThePath = this->costOfThePath + currNode->getCost();
                     myPath.insert(myPath.begin(), currNode);
                 }
+                cout << "Cost: " << this->costOfThePath << endl;
+                cout << "Nodes: " << this->numberOfNodesVisitedTotal << endl;
                 return myPath;
 //                for (int i = 0; i < theStateQueue.size(); i++) {
 //                    // trace out way back with the states from goal to initial state.

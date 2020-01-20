@@ -4,14 +4,14 @@
 
 #include "MyMatrixClientHandler.h"
 
-MyMatrixClientHandler::MyMatrixClientHandler(MatrixSolver* matrixSolver1) {
+MyMatrixClientHandler::MyMatrixClientHandler(MatrixSolver* matrixSolver1) : matrixSolver(matrixSolver1){
     this->myCache = new FileCacheManager<string, string>(this->solutionMatrixNameFile);
-    this->matrixSolver = matrixSolver1;
 }
-//MyMatrixClientHandler::MyMatrixClientHandler(const MyMatrixClientHandler& copyMyMatrixClientHandler) {
-//    this->myCache = new FileCacheManager<string, string>(this->solutionMatrixNameFile);
-//    this->matrixSolver = matrixSolver(copyMyMatrixClientHandler.matrixSolver);
-//}
+// copy constructor
+MyMatrixClientHandler::MyMatrixClientHandler(const MyMatrixClientHandler& copyClientHandler) :
+matrixSolver(copyClientHandler.matrixSolver) {
+    this->myCache = new FileCacheManager<string, string>(this->solutionMatrixNameFile);
+}
 
 void MyMatrixClientHandler::handleClient(int client_socket) {
     // reading from buffer and getting the matrix as vector of strings.

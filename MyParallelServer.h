@@ -22,7 +22,7 @@ private:
     int port;
 public:
     MyParallelServer();
-    void open(int port, ClientHandler* clientHandler) override;
+    void open(int port, ClientHandler &clientHandler) override;
 
     void stop() override;
 

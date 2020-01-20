@@ -35,6 +35,7 @@ string MatrixSolver::returnPath(vector<State<Point> *> myPath) {
         myStringSolution.append(",");
     }
     myStringSolution.erase(myStringSolution.size()-1);
+
     return myStringSolution;
 }
 

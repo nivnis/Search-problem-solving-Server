@@ -7,7 +7,7 @@
 //MyParallelServer::MyParallelServer(){
 //    this->client_socket = -1;
 //}
-//void MyParallelServer::open(int port, ClientHandler *clientHandler) {
+//void MyParallelServer::open(int port, ClientHandler &clientHandler) {
 //    this->port = port;
 //    int timeout_in_seconds = 240.0;
 ////create socket
