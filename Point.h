@@ -6,6 +6,7 @@
 #define EX4_POINT_H
 #pragma once
 
+#include <string>
 
 class Point {
 private:
