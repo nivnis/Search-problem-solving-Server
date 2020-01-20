@@ -5,105 +5,132 @@
 #ifndef EX4_ASTAR_H
 #define EX4_ASTAR_H
 
+#endif //EX4_ASTAR_H
 
 #include "Searcher.h"
-template <class T>
-class Astar : public Searcher<T>{
-private:
-    //inner class to sort the set from lowest cost + heuristic to biggest.
-    class StateComparator {
+
+template<class T>
+class AStar : public Searcher<T> {
+    int numOfNodes;
+    double totalPathCost;
+
+    //inner class to use in the priority queue in the algorithm.
+    class StateCompare {
     public:
         bool operator()(State<T> *left, State<T> *right) {
-            return (left->getPathCost() + left->getHeuristicDistance() > right->getPathCost()
-                                                                         + right->getHeuristicDistance());
+            return ((left->getHeuristicDistance() + left->getPathCost()) >
+                    (right->getHeuristicDistance() + right->getPathCost()));
         }
     };
-    double costOfThePath;
-    int numberOfNodesVisitedTotal;
-    State<T> *goalState, *initialState, *currState;
-    set <State<T> *, StateComparator > open;
-    unordered_set <State<T> *> closed;
-    vector<State<T> *> path;
+
 public:
-    Astar() {
-        this->costOfThePath = 0;
-        this->numberOfNodesVisitedTotal = 0;
-    }
-    State<T>* getLowestFromOpen() {
-        State<T>* state;
-        state = open.begin();
-        open.erase(state);
-        //here i should increase the num of nodes evaluated
-        numberOfNodesVisitedTotal++;
-        return state;
+
+    AStar() {
+        numOfNodes = 0;
+        totalPathCost = 0;
     }
 
-    void backTrace() {
-        costOfThePath += currState->getCost();
-        path.insert(path.begin(), currState);
-        while(!currState->equals_to(initialState)) {
-            currState = currState->getCameFrom();
-            costOfThePath += currState->getCost();
-            path.insert(path.begin(), currState);
+    void resetMembers() {
+        this->totalPathCost = 0;
+        this->numOfNodes = 0;
+    }
+
+
+    /**
+     * Checks whether or not a specific state is in the priority queue. If so, returns true else false.
+     */
+    bool isNodeInQueue(
+            priority_queue<State<T> *, vector<State<T> *>, StateCompare> priorityQueue,
+            State<T> *node) {
+        //goes over the queue until it's empty.
+        while (!priorityQueue.empty()) {
+            if (node->equals_to(priorityQueue.top())) {
+                return true;
+            }
+            priorityQueue.pop();
         }
-    }
-
-    bool isInOpen(set <State<T> *, StateComparator > s, State<T> * wantedNode) {
-        return s.count(wantedNode) != 0;
-    }
-
-    bool isInUnorderedSet(unordered_set <State<T> *> unorderedSet, State<T> * wantedNode) {
-        return unorderedSet.count(wantedNode) != 0;
+        return false;
     }
 
     vector<State<T> *> search(Searchable<T> *searchable) override {
-        initialState = searchable->getInitialState();
-        goalState = searchable->getGoalState();
-        initialState->setHeuristicDistance(searchable->findDistance(initialState, goalState));
-        initialState->setCameFrom(initialState);
-        open.insert(initialState);
+        resetMembers();
+        //keeps the nodes we've already traveled in
+        vector<State<T> *> nodesVisited;
+        //keeps the nodes we need to travel in. sorts the nodes from the ones with the lowest
+        // path-cost to the highest one
+        priority_queue<State<T> *, vector<State<T> *>, StateCompare> open;
+        //the final path from the source node to the destination node
+        vector<State<T> *> path;
+        State<T> *currentState = searchable->getInitialState();
+        State<T> *goalState = searchable->getGoalState();
+        currentState->setCameFrom(currentState);
+        currentState->setPathCost(currentState->getCost());
+        currentState->setHeuristicDistance(searchable->findDistance(currentState, goalState));
+        open.push(currentState);
         while (!open.empty()) {
-            currState = getLowestFromOpen();
-            closed.insert(currState);
-            //if we reached the goalState
-            if(searchable->isGoal(currState)) {
-                backTrace();
-                return path;
+            currentState = open.top();
+            open.pop();
+            if (!this->hasNodeBeenVisited(nodesVisited, currentState)) {
+                this->numOfNodes += 1;
             }
-
-            //HERE I SHOULD GO TO SUCCESSORS AND KEEP GOING
-            vector<State<T>*> successors = searchable->getAllPossibleStates(currState);
-            for(State<T> * s : successors) {
-                double newPathCost = currState->getCost() + s->getCost();
-                //heuristic value of the successor
-                double nodeHeuristicValue = searchable->findDistance(s, goalState);
-                double totalPathCost = newPathCost + nodeHeuristicValue;
-                //it's the first time we meet this node (state)
-                if(!isInOpen(open, s) && !isInUnorderedSet(closed, s)) {
-                    s->setCameFrom(currState);
-                    s->setCost(newPathCost);
-                    s->setHeuristicDistance(nodeHeuristicValue);
-                    open.insert(s);
+            //if the are no more paths to check to the destination node then return the path to it
+            if (currentState->equals_to(searchable->getGoalState())) {
+                path.insert(path.begin(), currentState);
+                this->totalPathCost += currentState->getCost();
+                while (!(currentState->equals_to(searchable->getInitialState()))) {
+                    currentState = currentState->getCameFrom();
+                    path.insert(path.begin(), currentState);
+                    this->totalPathCost += currentState->getCost();
                 }
-                //not the first time we meet this node - check if the new cost is better than the current one
-                else if((s->getCost() + s->getHeuristicDistance()) > totalPathCost) {
-                    s->setCost(newPathCost);
-                    s->setHeuristicDistance(nodeHeuristicValue);
-                    s->setCameFrom(currState);
-                    open.insert(s);
+                return path;
+            } else {
+                //find all the adjacent nodes
+                for (State<T> *adj : searchable->getAllPossibleStates(currentState)) {
+                    //gets the current adjacent State
+                    double adjPathCost = currentState->getPathCost() + adj->getCost();
+                    double adjDistanceToGoal = searchable->findDistance(adj, goalState);
+                    double adjHeuristic = adjPathCost + adjDistanceToGoal;
+                    /*
+                     * if the node was already visited and we dont need to find a cheaper
+                     * way to it - continue, but if the node was already visited and we can to
+                     * find a cheaper way to it - check
+                     */
+                    if (this->hasNodeBeenVisited(nodesVisited, adj) ||
+                        isNodeInQueue(open, adj)) {
+                        if (!this->hasNodeBeenVisited(nodesVisited, adj)
+                            && isNodeInQueue(open, adj)) {
+                            //compares the lowest heuristic of the same State with 2 different
+                            // paths to it.
+                            if (adjHeuristic < (adj->getPathCost() + adj->getHeuristicDistance())) {
+                                //if cheaper heuristic found - update adjacent State fields
+                                adj->setCameFrom(currentState);
+                                adj->setPathCost(adjPathCost);
+                                adj->setHeuristicDistance(adjDistanceToGoal);
+                                open.emplace(adj);
+                            }
+                        }
+                        continue;
+                    } else {
+                        //for a node we visit in the first time - update its information.
+                        adj->setCameFrom(currentState);
+                        adj->setPathCost(adjPathCost);
+                        adj->setHeuristicDistance(adjDistanceToGoal);
+                        open.emplace(adj);
+                    }
                 }
+                //insert the current node to nodesVisited to make sure we dont check it again
+                nodesVisited.emplace_back(currentState);
             }
         }
         return path;
     }
 
     double getNumOfNodesEvaluated() override {
-        return numberOfNodesVisitedTotal;
+        return numOfNodes;
     }
 
     double getTheCostOfPath() override {
-        return costOfThePath;
+        return totalPathCost;
     }
-};
 
-#endif //EX4_ASTAR_H
+};

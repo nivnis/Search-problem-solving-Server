@@ -62,6 +62,14 @@ public:
     void setCost(double cost) {
         State::cost = cost;
     }
+////////////////////////////////////////////////////
+    void setPathCost(double pathCost) {
+        State::myPathCost = pathCost;
+    }
+
+    double getPathCost() {
+        return this->myPathCost;
+    }
 
     void setHeuristicDistance(double distanceTillState) {
         distanceTillState = distanceTillState;
@@ -71,26 +79,35 @@ public:
         return distanceTillState;
     }
 
-    //operator overloading below to check inequalities between the costs of each state.
-    const bool operator==(const State &other) {
-        return (this->cost == other.getCost());
-    }
+//    //operator overloading below to check inequalities between the costs of each state.
+//    const bool operator==(const State &other) {
+//        return (this->equals_to(other));
+//    }
+//
+//    const bool operator<(const State &other) {
+//        return (this->getCost() < other.getCost());
+//    }
+//
+//    const bool operator>(const State &other) {
+//        return (this->getCost() > other.getCost());
+//    }
+//
+//    const bool operator<=(const State &other) {
+//        return (this->getCost() <= other.getCost());
+//    }
+//
+//    const bool operator>=(const State &other) {
+//        return (this->getCost() >= other.getCost());
+//    }
 
-    const bool operator<(const State &other) {
-        return (this->getCost() < other.getCost());
-    }
-
-    const bool operator>(const State &other) {
-        return (this->getCost() > other.getCost());
-    }
-
-    const bool operator<=(const State &other) {
-        return (this->getCost() <= other.getCost());
-    }
-
-    const bool operator>=(const State &other) {
-        return (this->getCost() >= other.getCost());
-    }
+//    const hash<State> {
+//        std::size_t operator()(S const& s) const noexcept
+//        {
+//            std::size_t h1 = std::hash<std::string>{}(s.first_name);
+//            std::size_t h2 = std::hash<std::string>{}(s.last_name);
+//            return h1 ^ (h2 << 1); // or use boost::hash_combine (see Discussion)
+//        }
+//    };
 };
 
 
