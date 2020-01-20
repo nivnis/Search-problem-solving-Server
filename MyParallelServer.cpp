@@ -5,9 +5,10 @@
 #include "MyParallelServer.h"
 
 MyParallelServer::MyParallelServer(){
-    this->client_socket = -1;
+    this->server_socket = -1;
 }
-void MyParallelServer::open(int port, ClientHandler *clientHandler) {
+
+void MyParallelServer::open(int port, ClientHandler &clientHandler) {
     this->port = port;
     int timeout_in_seconds = 240.0;
 //create socket
@@ -40,36 +41,59 @@ void MyParallelServer::open(int port, ClientHandler *clientHandler) {
         std::cout<<"Server is now listening ..."<<std::endl;
     }
     this->server_socket = socketfd;
+    runParalleServer(clientHandler);
+}
 
+void MyParallelServer::runParalleServer(ClientHandler &cHandler) {
     // from here we start the clients.
-    while(true) {
-        struct timeval tv;
-        tv.tv_sec = timeout_in_seconds;
-        setsockopt(socketfd, SOL_SOCKET, SO_RCVTIMEO, (const char *) &tv, sizeof tv);
-        int newSocket;
-        int addrlen = sizeof(address);
+    int client_socket;
+    int clilentLen;
+    struct sockaddr_in cli_addr;
+    clilentLen = sizeof(cli_addr);
+    timeval timeOut;
+    timeOut.tv_usec = 0;
 
-        newSocket = accept(socketfd, (struct sockaddr *) &address, (socklen_t *) &addrlen);
-        if (newSocket == -1) {
-            std::cerr << "Error accepting Client" << std::endl;
+    while(true) {
+//        struct timeval tv;
+//        tv.tv_sec = 0;
+//        setsockopt(server_socket, SOL_SOCKET, SO_RCVTIMEO, (const char *) &tv, sizeof tv);
+//        int newSocket;
+//        int addrlen = sizeof(address);
+        timeOut.tv_sec = 0;
+
+
+        /* Accept actual connection from the client */
+        client_socket = accept(server_socket, (struct sockaddr *) &cli_addr, (socklen_t *) &clilentLen);
+        if (client_socket == -1) {
+            //if we reached timeout we stop the server
+            if (errno == EWOULDBLOCK || errno == EAGAIN){
+                break;
+            }
+            cerr << "Error accepting Client" << std::endl;
             exit(1);
         }
 
-        myThreadQueue.push(thread())
+        runClinetsWithThreads(client_socket, cHandler);
 
-//        this->myThreadQueue.push(thread(clientHandler->handleClient(newSocket), newSocket));
+
+
 
     }
-    // finish.
-    stop();
+}
+
+static void handleAClient(int c_socket, ClientHandler *clientHandler) {
 
 }
 
+void MyParallelServer::runClinetsWithThreads(int client_socket, ClientHandler &clientHandler) {
+    this->myThreadQueue.push(thread(handleAClient, client_socket, &clientHandler));
+}
+
 void MyParallelServer::stop() {
-    if(this->client_socket != -1){
-        close(client_socket);
+    if(this->server_socket != -1){
+        close(server_socket);
     }
-    while(!this->myThreadQueue.empty()){
+    while(!this->myThreadQueue.empty()) {
         this->myThreadQueue.front().join();
         this->myThreadQueue.pop();
     }

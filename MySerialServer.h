@@ -24,7 +24,7 @@ private:
     int client_socket;
 public:
     MySerialServer();
-    void open(int port, ClientHandler *myTestClientHandler);
+    void open(int port, ClientHandler &myTestClientHandler) override;
     void stop();
 };
 
