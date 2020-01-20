@@ -54,7 +54,7 @@ public:
             // saving problemHashed and problem hashed in one big file of problem we already solver.
             // so we can load it from there all the solutions at the beginning of the program.
             ofstream matrixSolutionFileStream;
-            matrixSolutionFileStream.open(fileSolutionsName, ios::out);
+            matrixSolutionFileStream.open(fileSolutionsName, ios::out | ios::app);
             if (!matrixSolutionFileStream.is_open()) {
                 throw "Cant open file.";
             }else{
