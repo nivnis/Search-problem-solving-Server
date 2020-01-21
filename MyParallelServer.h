@@ -15,18 +15,22 @@
 #include <queue>
 #include "MyTestClientHandler.h"
 
+namespace server_side {
+    class MyParallelServer : public Server {
+    private:
+        queue<thread> myThreadQueue;
+        int server_socket;
+    public:
+        MyParallelServer();
 
-class MyParallelServer : public Server{
-private:
-    queue<thread> myThreadQueue;
-    int server_socket;
-public:
-    MyParallelServer();
-    void open(int port, ClientHandler &clientHandler) override;
-    void stop() override;
-    void runParallelServer(ClientHandler &cHandler);
-    void runClientsWithThreads(int c_socket, ClientHandler &clientHandler);
+        void open(int port, ClientHandler &clientHandler) override;
 
-};
+        void stop() override;
 
+        void runParallelServer(ClientHandler &cHandler);
+
+        void runClientsWithThreads(int c_socket, ClientHandler &clientHandler);
+
+    };
+}
 #endif //EX4_MYPARALLELSERVER_H

@@ -2,9 +2,9 @@
 // Created by yuvallevy on 13/01/2020.
 #include "MySerialServer.h"
 
-MySerialServer::MySerialServer(){}
+server_side::MySerialServer::MySerialServer(){}
 
-void MySerialServer::open(int port, ClientHandler &myTestClientHandler){
+void server_side::MySerialServer::open(int port, ClientHandler &myTestClientHandler){
     int timeout_in_seconds = 120;
     this->port = port;
     //create socket
@@ -67,6 +67,6 @@ void MySerialServer::open(int port, ClientHandler &myTestClientHandler){
 }
 
 
-void MySerialServer::stop(){
+void server_side::MySerialServer::stop(){
 
 }

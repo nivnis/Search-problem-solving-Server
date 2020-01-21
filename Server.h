@@ -10,15 +10,13 @@
 #include "ClientHandler.h"
 
 using namespace std;
-//namespace side_server {
-//class Server;
-//}
-//class side_server::Server {
-class Server {
-private:
-    int port;
-public:
-    virtual void open(int port, ClientHandler &clientHandler) = 0;
+namespace server_side {
+    class Server {
+    private:
+        int port;
+    public:
+        virtual void open(int port, ClientHandler &clientHandler) = 0;
 
-    virtual void stop() = 0;
-};
+        virtual void stop() = 0;
+    };
+}
