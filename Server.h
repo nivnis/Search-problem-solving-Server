@@ -8,6 +8,7 @@
 #endif //EX4_SERVER_H
 
 #include "ClientHandler.h"
+
 using namespace std;
 //namespace side_server {
 //class Server;
@@ -18,5 +19,6 @@ private:
     int port;
 public:
     virtual void open(int port, ClientHandler &clientHandler) = 0;
+
     virtual void stop() = 0;
 };

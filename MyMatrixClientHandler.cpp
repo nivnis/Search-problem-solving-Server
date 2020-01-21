@@ -117,14 +117,9 @@ vector<string> MyMatrixClientHandler::readFromBuffer(int client_socket){
         found = line.find("end");
         if (found != string::npos)
             break;
-        // updating our member which is the problem as one long string.
-        this->theProbAsOnlyString.append(lineWithOutpaces);
-        // adding extra comma between each line of matrix.
-        this->theProbAsOnlyString.append(",");
         // adding the line of the matrix we just read to the vector of strings.
         problemWithString.push_back(lineWithOutpaces);
     }
-    this->theProbAsOnlyString.pop_back();
     return problemWithString;
 }
 

@@ -18,14 +18,14 @@ private:
     double distanceTillState;
 
 public:
-    // check if they are from state.
-    // check if they are from state.
-    // constructor with no cost.
-    State(T state) : state(state){
-        this->came_from = nullptr;
-        this->myPathCost = -1;
-    }
-    // a state when we have a cost - like Astar or any algorithem with a cost.
+//    // check if they are from state.
+//    // check if they are from state.
+//    // constructor with no cost.
+//    State(T state) : state(state){
+//        this->came_from = nullptr;
+//        this->myPathCost = -1;
+//    }
+
     State(T state, double cost) : state(state){
         this->cost = cost;
         this->came_from = nullptr;
@@ -62,9 +62,7 @@ public:
     void setCost(double cost) {
         State::cost = cost;
     }
-    //comment
 
-    ////////////////////////////////////////////////////
     void setPathCost(double pathCost) {
         State::myPathCost = pathCost;
     }
@@ -81,35 +79,6 @@ public:
         return distanceTillState;
     }
 
-//    //operator overloading below to check inequalities between the costs of each state.
-//    const bool operator==(const State &other) {
-//        return (this->equals_to(other));
-//    }
-//
-//    const bool operator<(const State &other) {
-//        return (this->getCost() < other.getCost());
-//    }
-//
-//    const bool operator>(const State &other) {
-//        return (this->getCost() > other.getCost());
-//    }
-//
-//    const bool operator<=(const State &other) {
-//        return (this->getCost() <= other.getCost());
-//    }
-//
-//    const bool operator>=(const State &other) {
-//        return (this->getCost() >= other.getCost());
-//    }
-
-//    const hash<State> {
-//        std::size_t operator()(S const& s) const noexcept
-//        {
-//            std::size_t h1 = std::hash<std::string>{}(s.first_name);
-//            std::size_t h2 = std::hash<std::string>{}(s.last_name);
-//            return h1 ^ (h2 << 1); // or use boost::hash_combine (see Discussion)
-//        }
-//    };
 };
 
 

@@ -70,19 +70,10 @@ public:
                     this->costOfThePath = this->costOfThePath + currNode->getCost();
                     myPath.insert(myPath.begin(), currNode);
                 }
-                cout << "Cost: " << this->costOfThePath << endl;
-                cout << "Nodes: " << this->numberOfNodesVisitedTotal << endl;
+//                cout << "Cost: " << this->costOfThePath << endl;
+//                cout << "Nodes: " << this->numberOfNodesVisitedTotal << endl;
                 return myPath;
-//                for (int i = 0; i < theStateStack.size(); i++) {
-//                    if (currNode->equals_to(initialNode)) {
-//                        return myPath;
-//                    } else {
-//                        currNode = currNode->getCameFrom();
-//                        // increasing the cost of the path from goal to initial state.
-//                        this->costOfThePath = this->costOfThePath + currNode->getCost();
-//                        myPath.push_back(currNode);
-//                    }
-//                }
+
             }
         }
         // no path;

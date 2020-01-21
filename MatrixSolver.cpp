@@ -17,7 +17,7 @@ string MatrixSolver::solve(Searchable<Point> *problem) {
 }
 
 // return a string which will show the path from the initial state to the goal as a string.
-// can be: RIGHT,LET,UP,DOWN.
+// can be: RIGHT,LET,UP,DOWN and the cost each time.
 string MatrixSolver::returnPath(vector<State<Point> *> myPath) {
     if(myPath.empty()){
         return "No Path Found.";

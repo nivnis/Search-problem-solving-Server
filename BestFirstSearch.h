@@ -67,8 +67,8 @@ public:
 //                    cout<<"after: " << totalPathCost << currentState->getState()<<endl;
                 }
 //                cout<<totalPathCost<<endl;
-                cout << "Cost: " << this->costOfThePath << endl;
-                cout << "Nodes: " << this->numberOfNodesVisitedTotal << endl;
+                cout << "Cost: " << this->totalPathCost << endl;
+                cout << "Nodes: " << this->numOfNodes << endl;
                 return path;
             } else {
                 //find all the adjacent nodes

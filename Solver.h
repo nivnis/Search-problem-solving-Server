@@ -12,9 +12,6 @@
 using namespace std;
 
 template<class P, class S> class Solver {
-private:
-
-
 public:
     virtual S solve(P problem) = 0;
 

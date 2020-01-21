@@ -20,7 +20,6 @@ using namespace std;
 template <class P, class S>
 class FileCacheManager : public CacheManager<P,S>{
 private:
-//    list<pair<string,string>> ob_list;
     unordered_map<string, string> my_cache;
     string fileSolutionsName;
 public:
@@ -34,7 +33,7 @@ public:
     void save(P problem, S theSolution){
         // hashing the problem.
         string problemHashed = hash_to_string((string)problem);
-        // add the problem as key and the hashed problem as the value which will be the file name of the problem.
+        // add the hashed problem as key and the hashed problem as the value which will be the file name of the problem.
         this->my_cache[problemHashed] = problemHashed;
         write_to_file(problemHashed, problemHashed, theSolution);
     }
@@ -67,7 +66,6 @@ public:
 
     bool has_solution(P problem){
         string hashString = hash_to_string(problem);
-//        string problemHashed = hash_to_string((string)problem);
         if(my_cache.count(hashString)){
             return true;
         }else {
@@ -76,10 +74,8 @@ public:
     }
     string get(P problem){
         string hashString = hash_to_string(problem);
-//        string problemHashed = hash_to_string((string)problem);
         string solution;
-        //obj = (*my_cache[key]).second;
-//        solution = read_from_file(my_cache[problem]);
+        // after we hashed the problem we will look for a the file that has this name.
         solution = read_from_file(hashString);
         return solution;
     }

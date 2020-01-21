@@ -19,7 +19,6 @@ class MyMatrixClientHandler : public ClientHandler {
 private:
     CacheManager <string, string> *myCache;
     MatrixSolver* matrixSolver;
-    string theProbAsOnlyString;
     //string solutionMatrixNameFile = "MatrixSolutions.txt";
 
 public:
