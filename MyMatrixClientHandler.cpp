@@ -18,22 +18,27 @@ void MyMatrixClientHandler::handleClient(int client_socket) {
     // reading from buffer and getting the matrix as vector of strings.
     // creating a matrix out of the vector.
     vector<string> problemAsLongString = readFromBuffer(client_socket);
+    string allString= "";
+    for(int i =0; i<problemAsLongString.size();i++){
+        allString.append(problemAsLongString[i]);
+    }
+
     Matrix* myMatrix = createMatrix(problemAsLongString);
     string solution;
     // getting the hash number of the problem.
-    if(myCache->has_solution(this->theProbAsOnlyString)) {
-        solution = myCache->get(this->theProbAsOnlyString);
+    if(myCache->has_solution(allString)) {
+        solution = myCache->get(allString);
         cout<<"from CACHE: "<<solution<<endl;
     }
     else{
         // getting the actual problem.
         solution = this->matrixSolver->solve(myMatrix);
+        cout<<"created NEW solution: "<<solution<<endl;
         //here i update the solution to cache
-        myCache->save(this->theProbAsOnlyString, solution);
+        myCache->save(allString, solution);
     }
 
     //here i send the solution to the client via socket
-    cout<<solution<<endl;
     int is_sent = send(client_socket, solution.c_str(), solution.size() , 0);
     if (is_sent == -1) {
         std::cout << "Error sending message" << std::endl;

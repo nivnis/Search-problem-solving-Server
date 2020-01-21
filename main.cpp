@@ -20,8 +20,8 @@ int main() {
     FileCacheManager<string,string> cacheManager("MatrixSolutions.txt");
     MyMatrixClientHandler matrixClientHandler(&matrixSolver, &cacheManager);
     MyMatrixClientHandler matrixClientHandler1(matrixClientHandler);
-    MySerialServer serialServer;
-    serialServer.open(5600, matrixClientHandler);
+    MyParallelServer parallelServer;
+    parallelServer.open(5600, matrixClientHandler);
     delete(searchAlgorithm);
     return 0;
 

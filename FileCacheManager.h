@@ -35,8 +35,8 @@ public:
         // hashing the problem.
         string problemHashed = hash_to_string((string)problem);
         // add the problem as key and the hashed problem as the value which will be the file name of the problem.
-        this->my_cache[problem] = problemHashed;
-        write_to_file(problem, problemHashed, theSolution);
+        this->my_cache[problemHashed] = problemHashed;
+        write_to_file(problemHashed, problemHashed, theSolution);
     }
 
     void write_to_file(P problem, P problemHashed, S theSolution){
@@ -66,18 +66,21 @@ public:
     }
 
     bool has_solution(P problem){
+        string hashString = hash_to_string(problem);
 //        string problemHashed = hash_to_string((string)problem);
-        if(my_cache.count((string)problem)){
+        if(my_cache.count(hashString)){
             return true;
         }else {
             return false;
         }
     }
     string get(P problem){
+        string hashString = hash_to_string(problem);
 //        string problemHashed = hash_to_string((string)problem);
         string solution;
         //obj = (*my_cache[key]).second;
-        solution = read_from_file(my_cache[problem]);
+//        solution = read_from_file(my_cache[problem]);
+        solution = read_from_file(hashString);
         return solution;
     }
 
@@ -87,7 +90,7 @@ public:
         string solutionNameFile = (string) solutionHashed;
         solutionNameFile.append(".txt");
         ifstream solutionFileStream;
-        solutionFileStream.open(solutionNameFile, ios::in | ios::app);
+        solutionFileStream.open(solutionNameFile, ios::in);
         if (!solutionFileStream.is_open()) {
             throw "Cant open file.";
         } else {
@@ -105,11 +108,10 @@ public:
     string hash_to_string(P problem){
         hash<string> hasher;
         size_t solution_before_hash = hasher((string)problem);
-        string solution = to_string(solution_before_hash);
-        /*string solution;
+        string solution;
         stringstream mystream;
         mystream << solution_before_hash;
-        solution = mystream.str();*/
+        solution = mystream.str();
         return solution;
     }
     // we will have all of hour problems we solver in one big file. we will load them to the cache map every time
