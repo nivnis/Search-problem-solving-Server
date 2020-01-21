@@ -87,7 +87,7 @@ public:
         string solutionNameFile = (string) solutionHashed;
         solutionNameFile.append(".txt");
         ifstream solutionFileStream;
-        solutionFileStream.open(solutionNameFile, ios::in);
+        solutionFileStream.open(solutionNameFile, ios::in | ios::app);
         if (!solutionFileStream.is_open()) {
             throw "Cant open file.";
         } else {
@@ -105,10 +105,11 @@ public:
     string hash_to_string(P problem){
         hash<string> hasher;
         size_t solution_before_hash = hasher((string)problem);
-        string solution;
+        string solution = to_string(solution_before_hash);
+        /*string solution;
         stringstream mystream;
         mystream << solution_before_hash;
-        solution = mystream.str();
+        solution = mystream.str();*/
         return solution;
     }
     // we will have all of hour problems we solver in one big file. we will load them to the cache map every time

@@ -8,18 +8,33 @@
 #include "MyMatrixClientHandler.h"
 #include "BestFirstSearch.h"
 #include "AStar.h"
+#include "MyParallelServer.h"
 
 using namespace std;
 
 #include <set>
 int main() {
-    Server* server = new MySerialServer();
-    Searcher<Point>* algorithm = new BestFirstSearch<Point>();
-    MatrixSolver* matrixSolver = new MatrixSolver(algorithm);
-    MyMatrixClientHandler* myMatrixClientHandler = new MyMatrixClientHandler(matrixSolver);
-//    Server *server = new MySerialServer();
-    server->open(5605, *myMatrixClientHandler);
+
+    Searcher<Point> *searchAlgorithm = new AStar<Point>();
+    MatrixSolver matrixSolver(searchAlgorithm);
+    FileCacheManager<string,string> cacheManager("MatrixSolutions.txt");
+    MyMatrixClientHandler matrixClientHandler(&matrixSolver, &cacheManager);
+    MyMatrixClientHandler matrixClientHandler1(matrixClientHandler);
+    MySerialServer serialServer;
+    serialServer.open(5600, matrixClientHandler);
+    delete(searchAlgorithm);
     return 0;
+
+
+//    Searcher<Point> *searchAlgorithm = new AStar<Point>();
+//    MatrixSolver matrixSolver(searchAlgorithm);
+//    FileCacheManager<string,string> cacheManager("MatrixSolutions.txt");
+//    MyMatrixClientHandler matrixClientHandler(&matrixSolver, &cacheManager);
+//    MyMatrixClientHandler matrixClientHandler1(matrixClientHandler);
+//    MyParallelServer parallelServer;
+//    parallelServer.open(5600, matrixClientHandler);
+//    delete(searchAlgorithm);
+//    return 0;
 }
 
 //

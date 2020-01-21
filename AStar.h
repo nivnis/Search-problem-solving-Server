@@ -82,8 +82,8 @@ public:
                     path.insert(path.begin(), currentState);
                     this->totalPathCost += currentState->getCost();
                 }
-                cout << "Cost: " << this->costOfThePath << endl;
-                cout << "Nodes: " << this->numberOfNodesVisitedTotal << endl;
+//                cout << "Cost: " << this->costOfThePath << endl;
+//                cout << "Nodes: " << this->numberOfNodesVisitedTotal << endl;
                 return path;
             } else {
                 //find all the adjacent nodes

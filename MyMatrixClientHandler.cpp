@@ -4,13 +4,14 @@
 
 #include "MyMatrixClientHandler.h"
 
-MyMatrixClientHandler::MyMatrixClientHandler(MatrixSolver* matrixSolver1) : matrixSolver(matrixSolver1){
-    this->myCache = new FileCacheManager<string, string>(this->solutionMatrixNameFile);
+MyMatrixClientHandler::MyMatrixClientHandler(MatrixSolver* matrixSolver1, CacheManager<string, string> *cacheManager)
+: matrixSolver(matrixSolver1){
+    this->myCache = cacheManager;
 }
 // copy constructor
-MyMatrixClientHandler::MyMatrixClientHandler(const MyMatrixClientHandler& copyClientHandler) :
-matrixSolver(copyClientHandler.matrixSolver) {
-    this->myCache = new FileCacheManager<string, string>(this->solutionMatrixNameFile);
+MyMatrixClientHandler::MyMatrixClientHandler(const MyMatrixClientHandler* copyClientHandler,
+        CacheManager<string, string> *cacheManager) :matrixSolver(copyClientHandler->matrixSolver) {
+    this->myCache = cacheManager;
 }
 
 void MyMatrixClientHandler::handleClient(int client_socket) {
@@ -22,6 +23,7 @@ void MyMatrixClientHandler::handleClient(int client_socket) {
     // getting the hash number of the problem.
     if(myCache->has_solution(this->theProbAsOnlyString)) {
         solution = myCache->get(this->theProbAsOnlyString);
+        cout<<"from CACHE: "<<solution<<endl;
     }
     else{
         // getting the actual problem.
@@ -31,6 +33,7 @@ void MyMatrixClientHandler::handleClient(int client_socket) {
     }
 
     //here i send the solution to the client via socket
+    cout<<solution<<endl;
     int is_sent = send(client_socket, solution.c_str(), solution.size() , 0);
     if (is_sent == -1) {
         std::cout << "Error sending message" << std::endl;

@@ -20,11 +20,11 @@ private:
     CacheManager <string, string> *myCache;
     MatrixSolver* matrixSolver;
     string theProbAsOnlyString;
-    string solutionMatrixNameFile = "MatrixSolutions.txt";
+    //string solutionMatrixNameFile = "MatrixSolutions.txt";
 
 public:
-    MyMatrixClientHandler(MatrixSolver* matrixSolver1);
-    MyMatrixClientHandler(const MyMatrixClientHandler& copyClientHandler);
+    MyMatrixClientHandler(MatrixSolver* matrixSolver1, CacheManager<string, string> *cacheManager);
+    MyMatrixClientHandler(const MyMatrixClientHandler* copyClientHandler, CacheManager<string, string> *cacheManager);
     void handleClient(int client_socket) override;
     Matrix* createMatrix(vector<string> problemString);
     vector<string> readFromBuffer(int client_socket);
