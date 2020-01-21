@@ -44,39 +44,33 @@ void MyParallelServer::open(int port, ClientHandler &clientHandler) {
 
 void MyParallelServer::runParallelServer(ClientHandler &cHandler) {
     // from here we start the clients.
+    struct timeval timeout;
     int client_socket;
     int clilentLen;
     struct sockaddr_in cli_addr;
     clilentLen = sizeof(cli_addr);
-    timeval timeOut;
-    timeOut.tv_usec = 0;
+    fd_set master_set, working_set;
+    int max_sd;
 
-    while(true) {
-        timeOut.tv_sec = 0;
+    FD_ZERO(&master_set);
+    max_sd = server_socket;
+    FD_SET(server_socket, &master_set);
 
-        /* Accept actual connection from the client */
-        client_socket = accept(server_socket, (struct sockaddr *) &cli_addr, (socklen_t *) &clilentLen);
-        if (client_socket == -1) {
-            //if we reached timeout we stop the server
-            if (errno == EWOULDBLOCK || errno == EAGAIN){
-                break;
+    timeout.tv_sec = 120;
+    timeout.tv_usec = 0;
+    int rc = select(server_socket + 1, &master_set, NULL, NULL, &timeout);
+    if (rc > 0) {
+        do {
+//            while(true) {
+            /* Accept actual connection from the client */
+            client_socket = accept(server_socket, (struct sockaddr *) &cli_addr, (socklen_t *) &clilentLen);
+            if (client_socket == -1) {
+                cerr << "Error accepting Client" << std::endl;
+                exit(1);
             }
-            cerr << "Error accepting Client" << std::endl;
-            exit(1);
-        }
-
-        if (setsockopt(client_socket, SOL_SOCKET, SO_RCVTIMEO, (char *)&timeOut, sizeof(timeOut)) < 0)   {
-            perror("ERROR on setting timeOut");
-            exit(1);
-        }
-        runClientsWithThreads(client_socket, cHandler);
-
-        timeOut.tv_sec = 1;
-
-        if (setsockopt(client_socket, SOL_SOCKET, SO_RCVTIMEO, (char *)&timeOut, sizeof(timeOut)) < 0)   {
-            perror("ERROR on setting timeOut");
-            exit(1);
-        }
+            runClientsWithThreads(client_socket, cHandler);
+//            }
+        } while (true);
     }
     stop();
 }

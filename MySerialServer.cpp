@@ -2,14 +2,12 @@
 // Created by yuvallevy on 13/01/2020.
 #include "MySerialServer.h"
 
-MySerialServer::MySerialServer(){
-
-}
+MySerialServer::MySerialServer(){}
 
 void MySerialServer::open(int port, ClientHandler &myTestClientHandler){
     int timeout_in_seconds = 120;
     this->port = port;
-//create socket
+    //create socket
     int socketfd = socket(AF_INET, SOCK_STREAM, 0);
     if (socketfd == -1) {
         //error
