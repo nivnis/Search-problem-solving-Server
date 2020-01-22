@@ -26,7 +26,6 @@ namespace boot{
             MatrixSolver matrixSolver(searchAlgorithm);
             FileCacheManager<string,string> cacheManager("MatrixSolutions.txt");
             MyMatrixClientHandler matrixClientHandler(&matrixSolver, &cacheManager);
-            MyMatrixClientHandler matrixClientHandler1(matrixClientHandler);
             server_side::MyParallelServer parallelServer;
             parallelServer.open(portNum, matrixClientHandler);
             delete(searchAlgorithm);

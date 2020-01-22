@@ -19,8 +19,6 @@ class MyMatrixClientHandler : public ClientHandler {
 private:
     CacheManager <string, string> *myCache;
     MatrixSolver* matrixSolver;
-    //string solutionMatrixNameFile = "MatrixSolutions.txt";
-
 public:
     MyMatrixClientHandler(MatrixSolver* matrixSolver1, CacheManager<string, string> *cacheManager);
     MyMatrixClientHandler(const MyMatrixClientHandler* copyClientHandler, CacheManager<string, string> *cacheManager);
