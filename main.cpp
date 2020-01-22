@@ -9,18 +9,19 @@
 #include "BestFirstSearch.h"
 #include "AStar.h"
 #include "MyParallelServer.h"
-
+#define default_portNum 5600
 using namespace std;
 
 namespace boot{
     class Main{
     public:
         int main(int argc,char** argv){
-            if(argc <= 1){
-                perror("ERROR: No port was inserted");
-                return 0;
+            int portNum;
+            if(argc > 1){
+                portNum = stoi(argv[1]);
+            } else {
+                portNum = default_portNum;
             }
-            int portNum = stoi(argv[1]);
             Searcher<Point> *searchAlgorithm = new AStar<Point>();
             MatrixSolver matrixSolver(searchAlgorithm);
             FileCacheManager<string,string> cacheManager("MatrixSolutions.txt");
