@@ -66,6 +66,7 @@ void server_side::MyParallelServer::runParallelServer(ClientHandler &cHandler) {
                 cerr << "Error accepting Client" << std::endl;
                 exit(1);
             }
+            timeout.tv_sec = 120;
             runClientsWithThreads(client_socket, cHandler);
         }
         // we reached timeout
