@@ -21,14 +21,15 @@ namespace server_side {
         queue<thread> myThreadQueue;
         int server_socket;
     public:
+        //constructor
         MyParallelServer();
-
+        //opens server socket and listens
         void open(int port, ClientHandler &clientHandler) override;
-
+        //closes the threads and ports.
         void stop() override;
-
+        //run the parallel server
         void runParallelServer(ClientHandler &cHandler);
-
+        //adds threads to the thread queue and sends them to the clienthandler
         void runClientsWithThreads(int c_socket, ClientHandler &clientHandler);
 
     };

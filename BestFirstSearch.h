@@ -8,7 +8,7 @@
 
 template<class T>
 class BestFirstSearch : public Searcher<T> {
-    int numOfNodes;
+    int totalNumberOfNodes;
     double totalPathCost;
     //inner class to use in the priority queue in the algorithm.
     class StateComparator {
@@ -20,13 +20,11 @@ class BestFirstSearch : public Searcher<T> {
 
 public:
     BestFirstSearch(){
-        numOfNodes = 0;
+        totalNumberOfNodes = 0;
         totalPathCost = 0;
     }
 
-    bool isNodeInQueue(
-            priority_queue<State<T> *, vector<State<T> *>, StateComparator> pq,
-            State<T> *node) {
+    bool isInQueue(priority_queue<State<T> *, vector<State<T> *>, StateComparator> pq, State<T> *node) {
         //goes over the queue until it's empty.
         while (!pq.empty()) {
             if (node->equals_to(pq.top())) {
@@ -38,13 +36,11 @@ public:
     }
 
     vector<State<T> *> search(Searchable<T> *searchable) override {
-        reset();
-        //keeps the nodes we've already traveled in
+        //our closed - keeps the nodes we've already traveled in so we won't need to evaluate them again
         vector<State<T> *> visitedNodes;
-        //keeps the nodes we need to travel in. sorts the nodes from the ones with the lowest path-cost to the highest
-        // one
+        //our open - a priority queue that stores the states we visit and sorts it from lowest path cost to largest
         priority_queue<State<T> *, vector<State<T> *>, StateComparator> open;
-        //the final path from the source node to the destination node
+        //the final path from source to destination
         vector<State<T> *> path;
         State<T> *currentState = searchable->getInitialState();
         currentState->setCameFrom(currentState);
@@ -53,73 +49,60 @@ public:
         while (!open.empty()) {
             currentState = open.top();
             open.pop();
-            this->numOfNodes+=1;
-            //if the are no more paths to check to the destination node then return the path to it
+            this->totalNumberOfNodes += 1;
+            //if this is our goal node
             if (currentState->equals_to(searchable->getGoalState())) {
+                //insert the goal state to the path
                 path.insert(path.begin(), currentState);
+                //edit the goal node's path cost to the total path cost
                 this->totalPathCost += currentState->getCost();
-                while (!(currentState->equals_to(
-                        searchable->getInitialState()))) {
+                //backtrace the path and evaluates the path cost
+                while (!(currentState->equals_to(searchable->getInitialState()))) {
                     currentState = currentState->getCameFrom();
                     path.insert(path.begin(), currentState);
-//                    cout<<"before: " << totalPathCost << currentState->getState()<<endl;
                     this->totalPathCost += currentState->getCost();
-//                    cout<<"after: " << totalPathCost << currentState->getState()<<endl;
                 }
-//                cout<<totalPathCost<<endl;
-                cout << "Cost: " << this->totalPathCost << endl;
-                cout << "Nodes: " << this->numOfNodes << endl;
+                //return the correct path
                 return path;
-            } else {
-                //find all the adjacent nodes
-                for (State<T> *adj : searchable->getAllPossibleStates(currentState)) {
-                    //gets the current's adjacent State Path-Cost
-                    double adjPathCost = currentState->getPathCost() + adj->getCost();
-                    /*
-                     * if the node was already visited and we dont need to find a cheaper way to it - continue,
-                     * but if the node was already visited and we can to find a cheaper way to it - check
-                     */
-                    if (this->hasNodeBeenVisited(visitedNodes, adj) ||
-                        isNodeInQueue(open, adj)) {
-                        if (!this->hasNodeBeenVisited(visitedNodes, adj)
-                            && isNodeInQueue(open, adj)) {
-                            //compares the lowest cost of the same State with 2 different paths to it.
-                            if (adjPathCost < adj->getPathCost()) {
-                                //if cheaper path found - update it
-                                adj->setCameFrom(currentState);
-                                adj->setPathCost(adjPathCost);
-                                open.emplace(adj);
+            }
+            else {
+                //for all the neighbors
+                vector<State<T> *> neighbors = searchable->getAllPossibleStates(currentState);
+                for (State<T> *neighbor : neighbors) {
+                    //the current neighbor Path Cost
+                    double newPathCost = currentState->getPathCost() + neighbor->getCost();
+                    //if we already visited this node or it doesn't need to be updated
+                    if (this->hasNodeBeenVisited(visitedNodes, neighbor) || isInQueue(open, neighbor)) {
+                        if (!this->hasNodeBeenVisited(visitedNodes, neighbor) && isInQueue(open, neighbor)) {
+                            //if the new path cost is cheaper - we update the node's path cost to it
+                            if (newPathCost < neighbor->getPathCost()) {
+                                neighbor->setCameFrom(currentState);
+                                neighbor->setPathCost(newPathCost);
+                                open.emplace(neighbor);
                             }
                         }
                         continue;
                     } else {
-                        //for a node we visit in the first time - update its information.
-                        adj->setPathCost(adjPathCost);
-                        adj->setCameFrom(currentState);
-                        open.emplace(adj);
+                        //it's the first time we meet this node so we update it
+                        neighbor->setPathCost(newPathCost);
+                        neighbor->setCameFrom(currentState);
+                        open.emplace(neighbor);
                     }
                 }
-                //insert the current node to visitedNodes to make sure we dont check it again
+                //inserting the current node to the visited nodes so we won't visit him again
                 visitedNodes.emplace_back(currentState);
             }
         }
-        //could not find path from requested initial to goal.
+        //couldn't find the path - returns NO PATH FOUND
         return path;
     }
 
-    void reset(){
-        this->totalPathCost = 0;
-        this->numOfNodes = 0;
-    }
-
     double getNumOfNodesEvaluated() override {
-        return numOfNodes;
+        return totalNumberOfNodes;
     }
 
     double getTheCostOfPath() override {
         return totalPathCost;
     }
-
 };
-
 #endif //EX4_BESTFIRSTSEARCH_H

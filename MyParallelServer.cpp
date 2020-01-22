@@ -9,7 +9,7 @@ server_side::MyParallelServer::MyParallelServer(){
 }
 
 void server_side::MyParallelServer::open(int port, ClientHandler &clientHandler) {
-//create socket
+    //create socket
     int socketfd = socket(AF_INET, SOCK_STREAM, 0);
     if (socketfd == -1) {
         //error
@@ -23,8 +23,7 @@ void server_side::MyParallelServer::open(int port, ClientHandler &clientHandler)
     address.sin_family = AF_INET;
     address.sin_addr.s_addr = INADDR_ANY; //give me any IP allocated for my machine
     address.sin_port = htons(port);
-    //we need to convert our number
-    // to a number that the network understands.
+    //we need to convert our number to a number that the network understands.
 
     //the actual bind command
     if (bind(socketfd, (struct sockaddr *) &address, sizeof(address)) == -1) {
@@ -39,28 +38,27 @@ void server_side::MyParallelServer::open(int port, ClientHandler &clientHandler)
         std::cout<<"Server is now listening ..."<<std::endl;
     }
     this->server_socket = socketfd;
+    //run the parallel server now
     runParallelServer(clientHandler);
 }
 
 void server_side::MyParallelServer::runParallelServer(ClientHandler &cHandler) {
-    // from here we start the clients.
+    // initialize variables
     struct timeval timeout;
-    int client_socket;
-    int clilentLen;
+    int client_socket, clilentLen, rc;
     struct sockaddr_in cli_addr;
     clilentLen = sizeof(cli_addr);
-    fd_set master_set, working_set;
-    int max_sd;
-    int rc;
+    fd_set master_set;
     FD_ZERO(&master_set);
-    max_sd = server_socket;
     FD_SET(server_socket, &master_set);
-
-    timeout.tv_sec = 30;
+    //set the timeout
+    timeout.tv_sec = 120;
     timeout.tv_usec = 0;
 
     while (true) {
+        //start counting until timeout
         rc = select(server_socket + 1, &master_set, NULL, NULL, &timeout);
+        //if we didn't reach timeout and the server socket made and action
         if (rc > 0) {
             /* Accept actual connection from the client */
             client_socket = accept(server_socket, (struct sockaddr *) &cli_addr, (socklen_t *) &clilentLen);
@@ -70,25 +68,31 @@ void server_side::MyParallelServer::runParallelServer(ClientHandler &cHandler) {
             }
             runClientsWithThreads(client_socket, cHandler);
         }
+        // we reached timeout
         else {
             break;
         }
     }
+        //close threads and socket
         stop();
 }
-
+//a static method that sends the problem to the clientHandler
 static void handleAClient(int c_socket, ClientHandler *clientHandler) {
+    //send to the clientHandler
     clientHandler->handleClient(c_socket);
 }
 
 void server_side::MyParallelServer::runClientsWithThreads(int c_socket, ClientHandler &clientHandler) {
+    //adds a new thread and sends it to the handleAClient method
     this->myThreadQueue.push(thread(handleAClient, c_socket, &clientHandler));
 }
 
 void server_side::MyParallelServer::stop() {
+    //close the server socket
     if(this->server_socket != -1){
         close(server_socket);
     }
+    //end the threads
     while(!this->myThreadQueue.empty()) {
         this->myThreadQueue.front().join();
         this->myThreadQueue.pop();

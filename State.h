@@ -18,25 +18,13 @@ private:
     double distanceTillState;
 
 public:
-//    // check if they are from state.
-//    // check if they are from state.
-//    // constructor with no cost.
-//    State(T state) : state(state){
-//        this->came_from = nullptr;
-//        this->myPathCost = -1;
-//    }
-
     State(T state, double cost) : state(state){
         this->cost = cost;
         this->came_from = nullptr;
     }
     // check if they are from state.
     bool equals_to(State* other_state){
-        if(this->state == other_state->getState()){
-            return true;
-        }else{
-            return false;
-        }
+        return this->state == other_state->getState();
     }
     T getState() const {
         return this->state;
@@ -55,12 +43,12 @@ public:
         return came_from;
     }
 
-    void setState(T state) {
-        State::state = state;
+    void setState(T s) {
+        State::state = s;
     }
 
-    void setCost(double cost) {
-        State::cost = cost;
+    void setCost(double c) {
+        State::cost = c;
     }
 
     void setPathCost(double pathCost) {
@@ -71,14 +59,13 @@ public:
         return this->myPathCost;
     }
 
-    void setHeuristicDistance(double distanceTillState) {
-        distanceTillState = distanceTillState;
+    void setHeuristicDistance(double dist) {
+        this->distanceTillState = dist;
     }
 
     double getHeuristicDistance() const {
         return distanceTillState;
     }
-
 };
 
 
