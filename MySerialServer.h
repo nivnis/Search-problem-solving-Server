@@ -20,9 +20,6 @@
 using namespace std;
 namespace server_side {
     class MySerialServer : public Server {
-    private:
-        int port;
-        int client_socket;
     public:
         MySerialServer();
 

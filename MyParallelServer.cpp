@@ -71,6 +71,7 @@ void server_side::MyParallelServer::runParallelServer(ClientHandler &cHandler) {
         }
         // we reached timeout
         else {
+            cout<<"SERVER TIMEOUT!"<<endl;
             break;
         }
     }
