@@ -28,12 +28,12 @@ void MyMatrixClientHandler::handleClient(int client_socket) {
     // getting the hash number of the problem.
     if(myCache->has_solution(allString)) {
         solution = myCache->get(allString);
-        cout<<"from CACHE: "<<solution<<endl;
+//        cout<<"from CACHE: "<<solution<<endl;
     }
     else{
         // getting the actual problem.
         solution = this->matrixSolver->solve(myMatrix);
-        cout<<"created NEW solution: "<<solution<<endl;
+//        cout<<"created NEW solution: "<<solution<<endl;
         //here i update the solution to cache
         myCache->save(allString, solution);
     }
